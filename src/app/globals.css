@@ -3,14 +3,21 @@
 @import "shadcn/tailwind.css";
 
 /*
- * `dark:` utilities match an explicit dark choice (data-theme="dark" on
- * <html>, set by the ThemeToggle in a later task). System-preference dark
- * mode (no explicit choice) is handled entirely by the CSS custom
- * properties below (block 2) — Tailwind's `dark:` variant intentionally
- * does not need to know about it, since every color utility already reads
- * from a var() that block 2 already redefines.
+ * `dark:` utilities must match the same two cases the token blocks below
+ * cover: an explicit dark choice (data-theme="dark" on <html>, set by the
+ * ThemeToggle in a later task) OR system preference with no explicit
+ * choice at all. Two rules, OR'd, mirroring blocks 2 and 3.
  */
-@custom-variant dark (&:is([data-theme="dark"] *));
+@custom-variant dark {
+  &:is([data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:is(:root:not([data-theme="light"]) *) {
+      @slot;
+    }
+  }
+}
 
 /*
  * Maps design tokens to Tailwind utilities (bg-background, text-primary,
@@ -48,20 +55,20 @@
 }
 
 /*
- * Paleta "painel operacional" (espírito AdminLTE): superfícies neutras de
- * baixa saturação, uma única cor de ação primária (azul sóbrio, sem
- * gradiente), bordas com contraste real. Radius reduzido (0.375rem) para
- * ler como ferramenta densa, não como landing page arredondada.
+ * "Operational panel" palette (AdminLTE spirit): low-saturation neutral
+ * surfaces, a single primary action color (sober blue, no gradient),
+ * borders with real contrast. Radius reduced (0.375rem) to read as a
+ * dense tool, not a rounded landing page.
  *
- * Os tokens de cor existem em TRÊS blocos — nenhum token pode ter sua
- * única definição dentro de um @media ou [data-theme], senão o modo
- * oposto fica sem valor:
- *   1. :root puro           → light, o padrão.
- *   2. @media prefers-color-scheme → SO em modo escuro, sem escolha explícita.
- *   3. :root[data-theme]    → escolha explícita do usuário, vence os dois acima.
+ * Color tokens exist in THREE blocks — no token may have its only
+ * definition inside an @media or [data-theme] block, or the opposite mode
+ * is left without a value:
+ *   1. bare :root                  → light, the default.
+ *   2. @media prefers-color-scheme → OS in dark mode, no explicit choice.
+ *   3. :root[data-theme]           → explicit user choice, wins over both.
  */
 
-/* 1. Light — padrão. */
+/* 1. Light — default. */
 :root {
   --background: oklch(0.97 0.003 250);
   --foreground: oklch(0.22 0.015 255);
@@ -84,7 +91,7 @@
   --radius: 0.375rem;
 }
 
-/* 2. Preferência do SO — só quando não há escolha explícita de light. */
+/* 2. OS preference — only when there is no explicit light choice. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --background: oklch(0.19 0.008 255);
@@ -108,7 +115,7 @@
   }
 }
 
-/* 3. Escolha explícita do usuário — vence os dois anteriores. */
+/* 3. Explicit user choice — wins over both of the above. */
 :root[data-theme="dark"] {
   --background: oklch(0.19 0.008 255);
   --foreground: oklch(0.94 0.004 250);
