@@ -48,3 +48,10 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# AGENTS.md: o Next.js 16 (`next dev`/`next build`) recria e faz commit
+# automático deste arquivo quando detecta que está rodando sob um agente
+# de IA, injetando instruções genéricas do framework para agentes.
+# As instruções de agente deste projeto vivem, curadas, no CLAUDE.md —
+# não queremos esse arquivo gerado automaticamente poluindo o repositório.
+AGENTS.md
