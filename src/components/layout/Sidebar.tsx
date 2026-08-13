@@ -23,10 +23,14 @@ export function Sidebar() {
   const collapsed = useUiStore((state) => state.sidebarCollapsed);
 
   return (
+    // Abaixo de md a sidebar é sempre ícone-only, independente do store — só
+    // a partir de md o estado de sidebarCollapsed passa a valer. Resolvido em
+    // CSS puro (classes responsivas w-14 md:w-56), sem matchMedia/useEffect,
+    // para não reintroduzir o flash de hidratação que o tema já evitou.
     <aside
       className={cn(
         "flex shrink-0 flex-col border-r border-border transition-[width] duration-150",
-        collapsed ? "w-14" : "w-56",
+        collapsed ? "w-14 md:w-14" : "w-14 md:w-56",
       )}
     >
       <nav aria-label="Navegação principal" className="flex flex-col gap-0.5 p-2">
@@ -38,8 +42,11 @@ export function Sidebar() {
             className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
           >
             <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-            {/* sr-only mantém o nome acessível quando o rótulo visual some no modo recolhido */}
-            <span className={cn("truncate", collapsed && "sr-only")}>{label}</span>
+            {/* sr-only mantém o nome acessível sempre que o rótulo visual some
+                (abaixo de md, ou em md+ quando o store está recolhido) */}
+            <span className={cn("truncate", collapsed ? "sr-only" : "sr-only md:not-sr-only")}>
+              {label}
+            </span>
           </Link>
         ))}
       </nav>

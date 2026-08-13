@@ -14,7 +14,16 @@ export function Topbar({ title, theme }: { title: string; theme: ThemePreference
 
   return (
     <header className="flex h-12 shrink-0 items-center gap-3 border-b border-border px-4">
-      <Button variant="ghost" size="icon" onClick={toggleSidebar} aria-label="Recolher menu">
+      {/* Abaixo de md a sidebar é sempre ícone-only (CSS puro), então o
+          botão não tem efeito nenhum ali — escondido para não sobrar um
+          controle que não faz nada. */}
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={toggleSidebar}
+        aria-label="Recolher menu"
+        className="hidden md:inline-flex"
+      >
         <PanelLeft className="h-4 w-4" />
       </Button>
       <h1 className="truncate text-sm font-semibold tracking-tight">{title}</h1>
