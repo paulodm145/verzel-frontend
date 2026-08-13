@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Verzel Frontend — Plataforma de Eventos e Ingressos
 
-## Getting Started
+Frontend do desafio Elite Dev (Verzel): uma plataforma de eventos e ingressos com três papéis de usuário — cliente (compra ingressos), organizador (cadastra e gerencia eventos) e portaria (valida ingressos na entrada). Construído em Next.js (App Router) com TypeScript, consumindo uma API REST que roda como projeto separado.
 
-First, run the development server:
+Este README cobre apenas o essencial para clonar, instalar e rodar o projeto localmente. A seção de decisões de arquitetura, os badges de tecnologia e a estratégia de testes chegam no epic de entrega (08) — se você está lendo isso antes disso existir, não é um README incompleto por descuido, é escopo proposital desta etapa.
+
+## Pré-requisitos
+
+- **Node.js 20.11 ou superior** (o código usa `import.meta.dirname`, disponível a partir do Node 20.11). O CI do projeto builda em Node 22 — se você tiver 22 disponível, prefira usar essa versão para ficar o mais próximo possível do ambiente de verificação, mas 20.11+ funciona.
+- **npm** (o projeto usa `package-lock.json`).
+- **Backend da API rodando na porta `3000`.** Este repositório é só o frontend; sem a API no ar, as páginas que dependem de dados (eventos, autenticação, ingressos etc.) não funcionam. As instruções de subida do backend estão no repositório dele (`docker compose up -d && npm run db:migrate && npm run db:seed && npm run dev`).
+
+## Como rodar
 
 ```bash
+npm ci
+cp .env.example .env
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3001](http://localhost:3001).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+O `.env` criado a partir do `.env.example` já aponta `API_URL` para `http://localhost:3000` — ajuste se o backend estiver em outro endereço.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts disponíveis
 
-## Learn More
+| Script         | Comando              | Descrição                                        |
+| -------------- | -------------------- | ------------------------------------------------ |
+| `dev`          | `next dev -p 3001`   | Sobe o servidor de desenvolvimento na porta 3001 |
+| `build`        | `next build`         | Gera o build de produção                         |
+| `start`        | `next start -p 3001` | Serve o build de produção na porta 3001          |
+| `lint`         | `eslint .`           | Roda o linter                                    |
+| `format`       | `prettier --write .` | Formata os arquivos                              |
+| `format:check` | `prettier --check .` | Verifica formatação sem alterar arquivos         |
+| `typecheck`    | `tsc --noEmit`       | Verifica os tipos sem gerar build                |
+| `test`         | `vitest run`         | Roda a suíte de testes uma vez                   |
+| `test:watch`   | `vitest`             | Roda a suíte de testes em modo watch             |
 
-To learn more about Next.js, take a look at the following resources:
+## Nota sobre as portas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+O backend ocupa a porta `3000`. Por isso este frontend roda na porta `3001` (configurado nos scripts `dev` e `start`) — as duas aplicações sobem em paralelo sem conflito.
