@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -45,16 +46,17 @@ export function ThemeToggle({ current }: { current: ThemePreference }) {
         <Moon className="hidden h-4 w-4 dark:block" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {OPTIONS.map(({ value, label, Icon }) => (
-          <DropdownMenuItem
-            key={value}
-            onSelect={() => choose(value)}
-            aria-current={current === value}
-          >
-            <Icon className="mr-2 h-4 w-4" />
-            {label}
-          </DropdownMenuItem>
-        ))}
+        <DropdownMenuRadioGroup
+          value={current}
+          onValueChange={(value) => choose(value as ThemePreference)}
+        >
+          {OPTIONS.map(({ value, label, Icon }) => (
+            <DropdownMenuRadioItem key={value} value={value} closeOnClick>
+              <Icon className="mr-2 h-4 w-4" />
+              {label}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );
