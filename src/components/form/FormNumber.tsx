@@ -1,7 +1,6 @@
 "use client";
 
 import { useId, type ChangeEvent } from "react";
-
 import { useController, useFormContext } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
@@ -41,12 +40,10 @@ export function FormNumber({ name, label, description, min, max, step }: FormNum
         min={min}
         max={max}
         step={step}
-        name={field.name}
-        ref={field.ref}
+        aria-invalid={fieldState.invalid || undefined}
+        {...field}
         value={(field.value as number | undefined) ?? ""}
         onChange={handleChange}
-        onBlur={field.onBlur}
-        aria-invalid={fieldState.invalid || undefined}
       />
     </FormFieldShell>
   );

@@ -1,7 +1,6 @@
 "use client";
 
 import { useId, useState, type ChangeEvent } from "react";
-
 import { useController, useFormContext } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
@@ -65,12 +64,11 @@ export function FormMoney({ name, label, description, placeholder = "R$ 0,00" }:
         id={id}
         inputMode="decimal"
         placeholder={placeholder}
-        name={field.name}
-        ref={field.ref}
+        aria-invalid={fieldState.invalid || undefined}
+        {...field}
         value={display}
         onChange={handleChange}
         onBlur={handleBlur}
-        aria-invalid={fieldState.invalid || undefined}
       />
     </FormFieldShell>
   );

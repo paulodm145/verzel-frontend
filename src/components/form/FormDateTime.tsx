@@ -1,7 +1,6 @@
 "use client";
 
 import { useId, type ChangeEvent } from "react";
-
 import { useController, useFormContext } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
@@ -50,12 +49,10 @@ export function FormDateTime({ name, label, description, min }: FormDateTimeProp
         id={id}
         type="datetime-local"
         min={min}
-        name={field.name}
-        ref={field.ref}
+        aria-invalid={fieldState.invalid || undefined}
+        {...field}
         value={toLocalInputValue(field.value)}
         onChange={handleChange}
-        onBlur={field.onBlur}
-        aria-invalid={fieldState.invalid || undefined}
       />
     </FormFieldShell>
   );

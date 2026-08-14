@@ -1,25 +1,30 @@
 "use client";
 
 import type { ReactNode } from "react";
-
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FormProvider,
   useForm,
   useFormContext,
   useFormState,
   type DefaultValues,
+  type FieldValues,
+  type Resolver,
   type SubmitHandler,
   type UseFormProps,
 } from "react-hook-form";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
 
 import { cn } from "@/lib/utils";
 
-interface FormProps<TSchema extends z.ZodType> {
-  schema: TSchema;
-  onSubmit: SubmitHandler<z.infer<TSchema>>;
-  defaultValues?: DefaultValues<z.infer<TSchema>>;
+// TFieldValues é inferido do `schema` (z.ZodType<TFieldValues>) no call site —
+// generic sobre o schema (em vez de `TSchema extends z.ZodType`) mantém
+// `useForm` e `zodResolver` alinhados sem instanciar `unknown` no meio.
+interface FormProps<TFieldValues extends FieldValues> {
+  schema: z.ZodType<TFieldValues>;
+  onSubmit: SubmitHandler<TFieldValues>;
+  defaultValues?: DefaultValues<TFieldValues>;
   children: ReactNode;
   className?: string;
   mode?: UseFormProps["mode"];
@@ -30,16 +35,21 @@ interface FormProps<TSchema extends z.ZodType> {
  * e companhia) leem esse contexto via useFormContext — nada de passar
  * `register`/`control` manualmente em cada tela.
  */
-export function Form<TSchema extends z.ZodType>({
+export function Form<TFieldValues extends FieldValues>({
   schema,
   onSubmit,
   defaultValues,
   children,
   className,
   mode = "onBlur",
-}: FormProps<TSchema>) {
-  const form = useForm<z.infer<TSchema>>({
-    resolver: zodResolver(schema),
+}: FormProps<TFieldValues>) {
+  const form = useForm<TFieldValues>({
+    // O overload do zodResolver para Zod 4 espera um schema com input "unknown"
+    // (dado bruto do formulário); um z.ZodType<TFieldValues> genérico não bate
+    // com esse shape na inferência do TS, embora seja exatamente o que o
+    // resolver faz em runtime. `schema` já está tipado na prop — os casts só
+    // contornam a fricção de generics entre as duas bibliotecas.
+    resolver: zodResolver(schema as never) as unknown as Resolver<TFieldValues>,
     defaultValues,
     mode,
   });
