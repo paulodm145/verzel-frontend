@@ -20,7 +20,7 @@ Progresso do projeto, agrupado por epic. Derivado de
 | [03 — Catálogo e eventos](#03--catálogo-e-eventos) | `feat/03-eventos` | — | ⬜ 0/6 |
 | [04 — Reserva e pagamento](#04--reserva-e-pagamento) | `feat/04-reserva` | — | ⬜ 0/7 |
 | [05 — Ingressos](#05--ingressos) | `feat/05-ingressos` | — | ⬜ 0/4 |
-| [06 — Portaria](#06--portaria) | `feat/06-portaria` | — | ⬜ 0/6 |
+| [06 — Portaria](#06--portaria) | `feat/06-portaria` | — | ✅ 6/6 |
 | [07 — Dashboard organizador](#07--dashboard-organizador) | `feat/07-dashboard` | — | ⬜ 0/6 |
 | [08 — Entrega](#08--entrega) | `docs/08-entrega` | — | ⬜ 0/4 |
 
@@ -143,12 +143,12 @@ Contratos: [`05-ingressos-e-portaria.md`](doc-frontend/05-ingressos-e-portaria.m
 
 Spec de feature a escrever: `specs/006-portaria.md`.
 
-- [ ] **06.1** `features/check-in`: service e `useValidateTicket` (`POST /gate/validate` responde sempre 200 — o hook nunca lança)
-- [ ] **06.2** `ValidationResult`: 4 estados em tela cheia, cada um com cor **e** ícone próprios, contraste AA nos dois temas, com testes
-- [ ] **06.3** `QRScanner` com `BarcodeDetector` nativo: ciclo de vida da câmera e trava de 2 s entre leituras, com testes
-- [ ] **06.4** Fallback `zxing-wasm` carregado sob demanda, atrás da mesma interface
-- [ ] **06.5** `ManualCodeInput` sempre visível, com máscara `TKT-XXXX-XXXX-XXXX`
-- [ ] **06.6** Vibração e som opcionais na confirmação
+- [x] **06.1** `features/check-in`: service e `useValidateTicket` (`POST /gate/validate` responde sempre 200 — o hook nunca lança)
+- [x] **06.2** `ValidationResult`: 4 estados em tela cheia, cada um com cor **e** ícone próprios, contraste AA nos dois temas, com testes
+- [x] **06.3** `QRScanner` com `BarcodeDetector` nativo: ciclo de vida da câmera e trava de 2 s entre leituras, com testes
+- [x] **06.4** Fallback `zxing-wasm` carregado sob demanda, atrás da mesma interface
+- [x] **06.5** `ManualCodeInput` sempre visível, com máscara `TKT-XXXX-XXXX-XXXX`
+- [x] **06.6** Vibração e som opcionais na confirmação
 
 **Pronto quando:** ler o mesmo QR duas vezes em menos de 2 s não mostra "já utilizado" logo após "liberado", e a tela é legível a um braço de distância.
 
