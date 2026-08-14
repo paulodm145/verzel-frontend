@@ -1,16 +1,24 @@
-# Verzel Frontend — Plataforma de Eventos e Ingressos
+# Verzel Frontend — Eventos e Ingressos
 
-Frontend do desafio Elite Dev (Verzel): uma plataforma de eventos e ingressos com três papéis de usuário — cliente (compra ingressos), organizador (cadastra e gerencia eventos) e portaria (valida ingressos na entrada). Construído em Next.js (App Router) com TypeScript, consumindo uma API REST que roda como projeto separado.
+![Next.js](https://img.shields.io/badge/Next.js-16.3-000000?logo=next.js)
+![React](https://img.shields.io/badge/React-19-149ECA?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)
+![Testes](https://img.shields.io/badge/testes-106%20aprovados-2E7D32)
 
-Este README cobre apenas o essencial para clonar, instalar e rodar o projeto localmente. A seção de decisões de arquitetura, os badges de tecnologia e a estratégia de testes chegam no epic de entrega (08) — se você está lendo isso antes disso existir, não é um README incompleto por descuido, é escopo proposital desta etapa.
+Frontend do desafio Elite Dev da Verzel. A aplicação cobre a jornada completa de uma plataforma de eventos: cliente escolhe assento e simula o pagamento, organizador cria e publica eventos, e portaria valida ingressos por QR Code ou código manual.
 
-## Pré-requisitos
+## Stack
 
-- **Node.js 20.19 ou superior** (`jsdom` e `@vitejs/plugin-react`, usados nos testes, exigem 20.19+). O CI do projeto builda em Node 22 — se você tiver 22 disponível, prefira usar essa versão para ficar o mais próximo possível do ambiente de verificação, mas 20.19+ funciona.
-- **npm** (o projeto usa `package-lock.json`).
-- **Backend da API rodando na porta `3000`.** Este repositório é só o frontend; sem a API no ar, o login, o cadastro e qualquer chamada de dados (eventos, ingressos etc.) respondem erro de rede — as telas de produto ainda não existem neste ponto do projeto, chegam a partir do epic 02. As instruções de subida do backend estão no repositório dele (`docker compose up -d && npm run db:migrate && npm run db:seed && npm run dev`).
+- Next.js 16.3 com App Router e BFF
+- React 19, TypeScript e Tailwind CSS 4
+- TanStack Query e TanStack Table
+- React Hook Form e Zod
+- Zustand
+- Vitest, Testing Library e MSW
 
 ## Como rodar
+
+Pré-requisitos: Node.js 20.19 ou superior, npm e o backend da API na porta `3000`.
 
 ```bash
 npm ci
@@ -18,24 +26,46 @@ cp .env.example .env
 npm run dev
 ```
 
-Abra [http://localhost:3001](http://localhost:3001).
+Acesse [http://localhost:3001](http://localhost:3001). A raiz encaminha ao login ou à área correspondente à sessão atual.
 
-O `.env` criado a partir do `.env.example` já aponta `API_URL` para `http://localhost:3000` — ajuste se o backend estiver em outro endereço.
+O `.env.example` usa:
 
-## Scripts disponíveis
+```dotenv
+API_URL=http://localhost:3000
+SESSION_COOKIE_SECURE=false
+```
 
-| Script         | Comando              | Descrição                                        |
-| -------------- | -------------------- | ------------------------------------------------ |
-| `dev`          | `next dev -p 3001`   | Sobe o servidor de desenvolvimento na porta 3001 |
-| `build`        | `next build`         | Gera o build de produção                         |
-| `start`        | `next start -p 3001` | Serve o build de produção na porta 3001          |
-| `lint`         | `eslint .`           | Roda o linter                                    |
-| `format`       | `prettier --write .` | Formata os arquivos                              |
-| `format:check` | `prettier --check .` | Verifica formatação sem alterar arquivos         |
-| `typecheck`    | `tsc --noEmit`       | Verifica os tipos sem gerar build                |
-| `test`         | `vitest run`         | Roda a suíte de testes uma vez                   |
-| `test:watch`   | `vitest`             | Roda a suíte de testes em modo watch             |
+## Usuários do seed
 
-## Nota sobre as portas
+| Papel       | E-mail                    | Senha            |
+| ----------- | ------------------------- | ---------------- |
+| Organizador | `organizador@verzel.test` | `organizador123` |
+| Cliente     | `cliente1@verzel.test`    | `cliente123`     |
+| Portaria    | `portaria@verzel.test`    | `portaria123`    |
 
-O backend ocupa a porta `3000`. Por isso este frontend roda na porta `3001` (configurado nos scripts `dev` e `start`) — as duas aplicações sobem em paralelo sem conflito.
+## Arquitetura
+
+O navegador fala somente com o Next. Login e refresh ficam no BFF e os tokens permanecem em cookies `httpOnly`; chamadas de domínio passam pelo proxy `/api/v/*`. Dados remotos pertencem ao TanStack Query, enquanto Zustand guarda apenas estado efêmero de fluxo e preferências de UI.
+
+As decisões e limitações estão detalhadas em [docs/DECISIONS.md](docs/DECISIONS.md). Os contratos consumidos estão em [docs/doc-frontend](docs/doc-frontend) e o progresso rastreável em [docs/BACKLOG.md](docs/BACKLOG.md).
+
+## Qualidade
+
+```bash
+npm run format:check
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
+
+Os testes priorizam lógica cujo defeito tem custo real: refresh single-flight, idempotência, expiração de reserva, conflitos de assento, estados da portaria, trava do scanner, formulários e tabela server-side. Markup trivial não é testado isoladamente.
+
+## Próximos passos
+
+- testes E2E com Playwright cobrindo compra e check-in reais;
+- lock distribuído do refresh em Redis para múltiplas instâncias;
+- observabilidade de erros por `requestId`;
+- execução periódica de auditoria de acessibilidade e contraste no CI.
+
+O uso de ferramentas de IA durante o desenvolvimento está registrado em [docs/USO-DE-IA.md](docs/USO-DE-IA.md).
