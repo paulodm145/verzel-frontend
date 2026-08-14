@@ -58,8 +58,18 @@ spec em docs/specs/  →  tasks em docs/BACKLOG.md  →  branch  →  commits at
 
 ## Convenção de idioma
 
-- **Código em inglês:** arquivos, pastas, variáveis, funções, tipos, componentes (`events-service.ts`, `useCreateReservation`, `SeatMap.tsx`).
-- **Textos visíveis em português:** mensagens de erro, labels, toasts, textos de tela. A API já devolve `message` pronta em português na maioria dos casos (ver `06-erros-e-convencoes.md`) — priorize exibir a mensagem da API em vez de reescrevê-la.
+| O quê | Idioma |
+| --- | --- |
+| Identificadores: arquivos, pastas, variáveis, funções, tipos, componentes | **inglês** (`events-service.ts`, `useCreateReservation`, `SeatMap.tsx`) |
+| Textos visíveis: labels, mensagens de erro, toasts, `aria-label` | **português** |
+| Comentários no código | **português** |
+| Mensagens e corpos de commit | **português** |
+| Specs, backlog, planos, README | **português** |
+
+Só identificador é em inglês. Tudo que explica *por quê* — comentário, commit, spec — é em português, porque é o que o avaliador vai ler. Decidido; não re-litigar arquivo a arquivo.
+
+- A API já devolve `message` pronta em português na maioria dos casos (ver `06-erros-e-convencoes.md`) — priorize exibir a mensagem da API em vez de reescrevê-la.
+- **`AGENTS.md` na raiz é gerado pelo `next dev`** e está no `.gitignore`. Ele precisa **existir no disco**: enquanto existir, o Next escreve o bloco de regras dele nesse arquivo; se for apagado, o Next passa a injetar dentro deste `CLAUDE.md`. Não apague.
 - Erros de validação (`VALIDATION_ERROR`) trazem `details[].path`/`.message` em inglês (vêm do Zod). Nunca repasse direto ao usuário: passe por `useApiFormErrors`, que traduz por campo via `lib/field-labels.ts`.
 
 ## Estrutura de pastas
