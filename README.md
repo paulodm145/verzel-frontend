@@ -6,9 +6,9 @@ Este README cobre apenas o essencial para clonar, instalar e rodar o projeto loc
 
 ## Pré-requisitos
 
-- **Node.js 20.11 ou superior** (o código usa `import.meta.dirname`, disponível a partir do Node 20.11). O CI do projeto builda em Node 22 — se você tiver 22 disponível, prefira usar essa versão para ficar o mais próximo possível do ambiente de verificação, mas 20.11+ funciona.
+- **Node.js 20.19 ou superior** (`jsdom` e `@vitejs/plugin-react`, usados nos testes, exigem 20.19+). O CI do projeto builda em Node 22 — se você tiver 22 disponível, prefira usar essa versão para ficar o mais próximo possível do ambiente de verificação, mas 20.19+ funciona.
 - **npm** (o projeto usa `package-lock.json`).
-- **Backend da API rodando na porta `3000`.** Este repositório é só o frontend; sem a API no ar, as páginas que dependem de dados (eventos, autenticação, ingressos etc.) não funcionam. As instruções de subida do backend estão no repositório dele (`docker compose up -d && npm run db:migrate && npm run db:seed && npm run dev`).
+- **Backend da API rodando na porta `3000`.** Este repositório é só o frontend; sem a API no ar, o login, o cadastro e qualquer chamada de dados (eventos, ingressos etc.) respondem erro de rede — as telas de produto ainda não existem neste ponto do projeto, chegam a partir do epic 02. As instruções de subida do backend estão no repositório dele (`docker compose up -d && npm run db:migrate && npm run db:seed && npm run dev`).
 
 ## Como rodar
 
