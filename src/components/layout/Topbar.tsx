@@ -26,7 +26,9 @@ export function Topbar({ title, theme }: { title: string; theme: ThemePreference
       >
         <PanelLeft className="h-4 w-4" />
       </Button>
-      <h1 className="truncate text-sm font-semibold tracking-tight">{title}</h1>
+      {/* Um passo acima do text-sm do resto da casca: hierarquia real por
+          peso E tamanho, não só cor (ver CLAUDE.md — critério anti-AI-slop). */}
+      <h1 className="truncate text-base font-semibold tracking-tight">{title}</h1>
       <div className="ml-auto">
         <ThemeToggle current={theme} />
       </div>

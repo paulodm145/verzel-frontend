@@ -69,7 +69,7 @@ spec em docs/specs/  →  tasks em docs/BACKLOG.md  →  branch  →  commits at
 Só identificador é em inglês. Tudo que explica *por quê* — comentário, commit, spec — é em português, porque é o que o avaliador vai ler. Decidido; não re-litigar arquivo a arquivo.
 
 - A API já devolve `message` pronta em português na maioria dos casos (ver `06-erros-e-convencoes.md`) — priorize exibir a mensagem da API em vez de reescrevê-la.
-- **`AGENTS.md` na raiz é gerado pelo `next dev`** e está no `.gitignore`. Ele precisa **existir no disco**: enquanto existir, o Next escreve o bloco de regras dele nesse arquivo; se for apagado, o Next passa a injetar dentro deste `CLAUDE.md`. Não apague.
+- **`AGENTS.md` na raiz é gerado (e recriado) pelo `next dev`/`next build`** e está versionado, não no `.gitignore`: assim um clone limpo já o tem, e o Next escreve o bloco de regras dele ali. Se for apagado do disco, o Next passa a injetar o mesmo bloco dentro deste `CLAUDE.md` em vez disso. Não apague.
 - Erros de validação (`VALIDATION_ERROR`) trazem `details[].path`/`.message` em inglês (vêm do Zod). Nunca repasse direto ao usuário: passe por `useApiFormErrors`, que traduz por campo via `lib/field-labels.ts`.
 
 ## Estrutura de pastas
