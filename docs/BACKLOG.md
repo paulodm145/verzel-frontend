@@ -16,7 +16,7 @@ Progresso do projeto, agrupado por epic. Derivado de
 |---|---|---|---|
 | [00 — Fundação](#00--fundação) | `feat/00-fundacao` | [plano](plans/2026-08-13-00-fundacao.md) | ✅ 11/11 |
 | [01 — Auth BFF](#01--auth-bff) | `feat/01-auth-bff` | — | ✅ 9/9 |
-| [02 — UI kit](#02--ui-kit) | `feat/02-ui-kit` | — | ⬜ 0/10 |
+| [02 — UI kit](#02--ui-kit) | `feat/02-ui-kit` | — | 🟨 9/10 |
 | [03 — Catálogo e eventos](#03--catálogo-e-eventos) | `feat/03-eventos` | — | ⬜ 0/6 |
 | [04 — Reserva e pagamento](#04--reserva-e-pagamento) | `feat/04-reserva` | — | ⬜ 0/7 |
 | [05 — Ingressos](#05--ingressos) | `feat/05-ingressos` | — | ⬜ 0/4 |
@@ -77,16 +77,16 @@ Spec: [seção 2](specs/000-fundacao-arquitetura.md).
 Os componentes que todas as telas consomem. Entra antes das telas de produto.
 Spec: [seção 4](specs/000-fundacao-arquitetura.md).
 
-- [ ] **02.1** `Modal` com `Modal.Header`/`Body`/`Footer`, `size` (`sm`/`md`/`lg`/`xl`) e `staticBackdrop`, sobre o Dialog do Radix
-- [ ] **02.2** `useConfirm()` imperativo, com tom `destructive`
-- [ ] **02.3** `<Form>` com `zodResolver` e contexto; `FormInput`, `FormPassword`
-- [ ] **02.4** `FormSelect`, `FormTextarea`, `FormNumber`, `FormMoney` (BRL, envia número), `FormDateTime` (ISO UTC)
-- [ ] **02.5** `useApiFormErrors` + `lib/field-labels.ts`: `details[].path` vira erro de campo traduzido; `(corpo)` e caminhos órfãos vão ao erro geral
-- [ ] **02.6** `DataTable` base: colunas tipadas, ordenação, paginação server-side (`skip`/`take`, `take` ≤ 50), estados carregando/vazio/erro
-- [ ] **02.7** `DataTable` toolbar: busca com debounce, visibilidade de colunas, `rowActions` inline
-- [ ] **02.8** `AsyncBoundary`, `EmptyState`, `ErrorState` (mostrando `message` da API e `requestId`)
-- [ ] **02.9** Telas de login e cadastro — primeiros consumidores do kit
-- [ ] **02.10** Tela `/403` de permissão insuficiente
+- [x] **02.1** `Modal` com `Modal.Header`/`Body`/`Footer`, `size` (`sm`/`md`/`lg`/`xl`) e `staticBackdrop`, sobre o Dialog do Radix
+- [x] **02.2** `useConfirm()` imperativo, com tom `destructive`
+- [x] **02.3** `<Form>` com `zodResolver` e contexto; `FormInput`, `FormPassword`
+- [x] **02.4** `FormSelect`, `FormTextarea`, `FormNumber`, `FormMoney` (BRL, envia número), `FormDateTime` (ISO UTC)
+- [x] **02.5** `useApiFormErrors` + `lib/field-labels.ts`: `details[].path` vira erro de campo traduzido; `(corpo)` e caminhos órfãos vão ao erro geral
+- [x] **02.6** `DataTable` base: colunas tipadas, ordenação, paginação server-side (`skip`/`take`, `take` ≤ 50), estados carregando/vazio/erro
+- [x] **02.7** `DataTable` toolbar: busca com debounce, visibilidade de colunas, `rowActions` inline
+- [x] **02.8** `AsyncBoundary`, `EmptyState`, `ErrorState` (mostrando `message` da API e `requestId`)
+- [ ] **02.9** Telas de login e cadastro — primeiros consumidores do kit (depende dos hooks `useLogin`/`useRegister` do epic 01; agendado à parte)
+- [x] **02.10** Tela `/403` de permissão insuficiente
 
 **Pronto quando:** dá para logar e cadastrar pela UI, o kit tem testes de `Modal`, `useApiFormErrors` e `DataTable`, e nenhuma tela tem `<input>` solto.
 
