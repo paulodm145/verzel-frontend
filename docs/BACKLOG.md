@@ -18,7 +18,7 @@ Progresso do projeto, agrupado por epic. Derivado de
 | [01 — Auth BFF](#01--auth-bff) | `feat/01-auth-bff` | — | ✅ 9/9 |
 | [02 — UI kit](#02--ui-kit) | `feat/02-ui-kit` | — | ✅ 10/10 |
 | [03 — Catálogo e eventos](#03--catálogo-e-eventos) | `feat/03-eventos` | — | ✅ 6/6 |
-| [04 — Reserva e pagamento](#04--reserva-e-pagamento) | `feat/04-reserva` | — | ⬜ 0/7 |
+| [04 — Reserva e pagamento](#04--reserva-e-pagamento) | `feat/04-reserva` | — | ✅ 7/7 |
 | [05 — Ingressos](#05--ingressos) | `feat/05-ingressos` | — | ✅ 4/4 |
 | [06 — Portaria](#06--portaria) | `feat/06-portaria` | — | ✅ 6/6 |
 | [07 — Dashboard organizador](#07--dashboard-organizador) | `feat/07-dashboard` | — | ⬜ 0/6 |
@@ -113,13 +113,13 @@ Contratos: [`03-eventos-e-catalogo.md`](doc-frontend/03-eventos-e-catalogo.md).
 Spec de feature a escrever: `specs/004-reserva.md`.
 Contratos: [`04-reserva-e-pagamento.md`](doc-frontend/04-reserva-e-pagamento.md).
 
-- [ ] **04.1** `features/reservations`: service e store com `Idempotency-Key` **por intenção** (trocar de assento gera outra), com testes
-- [ ] **04.2** `useCreateReservation`: botão travado durante a chamada; `409` sempre refaz o mapa de assentos
-- [ ] **04.3** `SeatPicker` e fluxo de checkout
-- [ ] **04.4** `ReservationCountdown` a partir de `expiresAt`, desaparecendo ao expirar, com testes
-- [ ] **04.5** `features/payment`: service e `useSimulatePayment` com chave nova
-- [ ] **04.6** `PaymentSimulator` com `APPROVED`/`REFUSED`; `Idempotency-Replayed: true` suprime o segundo toast
-- [ ] **04.7** `useMyReservations` e `useCancelReservation` (usa `seatLabel` embutido, não refaz o mapa)
+- [x] **04.1** `features/reservations`: service e store com `Idempotency-Key` **por intenção** (trocar de assento gera outra), com testes
+- [x] **04.2** `useCreateReservation`: botão travado durante a chamada; `409` sempre refaz o mapa de assentos
+- [x] **04.3** `SeatPicker` e fluxo de checkout
+- [x] **04.4** `ReservationCountdown` a partir de `expiresAt`, desaparecendo ao expirar, com testes
+- [x] **04.5** `features/payment`: service e `useSimulatePayment` com chave nova
+- [x] **04.6** `PaymentSimulator` com `APPROVED`/`REFUSED`; `Idempotency-Replayed: true` suprime o segundo toast
+- [x] **04.7** `useMyReservations` e `useCancelReservation` (usa `seatLabel` embutido, não refaz o mapa)
 
 **Pronto quando:** duplo clique em reservar não cria duas reservas, assento ocupado por outra sessão fica vermelho após o `409`, e o countdown expira sozinho.
 
