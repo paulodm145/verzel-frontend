@@ -1,17 +1,16 @@
 "use client";
 
-import Link from "next/link";
-
 import { Calendar, LayoutDashboard, ScanLine, Ticket } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 import { useUiStore } from "@/stores/ui-store";
 
-// Placeholder de navegação: os itens reais dependem do papel do usuário
-// (CUSTOMER/ORGANIZER/GATE) e chegam no epic 01. Os destinos abaixo já
-// refletem a estrutura de rotas documentada no CLAUDE.md, sem simular
-// dados de usuário (avatar, badges) que ainda não existem.
+// O epic 01 entrega a infraestrutura de sessão (BFF, middleware) mas ainda
+// nenhuma tela de produto — as rotas abaixo existem no middleware.ts (para
+// já protegê-las por papel), mas não têm page.tsx. Renderizar como <Link>
+// resultaria num 404 clicável. Quando uma rota ganhar sua página real, ela
+// sai desta lista de placeholders e vira um <Link> de verdade.
 const NAV_ITEMS = [
   { href: "/events", label: "Eventos", icon: Calendar },
   { href: "/my-tickets", label: "Meus ingressos", icon: Ticket },
@@ -35,11 +34,11 @@ export function Sidebar() {
     >
       <nav aria-label="Navegação principal" className="flex flex-col gap-0.5 p-2">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
-          <Link
+          <span
             key={href}
-            href={href}
-            title={label}
-            className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+            aria-disabled="true"
+            title={`${label} — esta tela ainda não existe, chega num epic futuro`}
+            className="flex cursor-not-allowed items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground/50"
           >
             <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
             {/* sr-only mantém o nome acessível sempre que o rótulo visual some
@@ -47,7 +46,7 @@ export function Sidebar() {
             <span className={cn("truncate", collapsed ? "sr-only" : "sr-only md:not-sr-only")}>
               {label}
             </span>
-          </Link>
+          </span>
         ))}
       </nav>
     </aside>
