@@ -1,7 +1,7 @@
 /**
- * Proteção de rotas por papel (spec seção 2.7). Lê só o cookie `vz_user`
- * (legível, não é credencial) — o gate real é o `403` da API quando as
- * chamadas de dados acontecem; isto aqui é UX, não segurança.
+ * Proteção de rotas por papel. No Next 16.3, a convenção `middleware.ts` foi
+ * substituída por `proxy.ts`; a regra continua sendo apenas UX, pois o gate
+ * real de autorização é o `403` devolvido pela API.
  */
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -14,7 +14,7 @@ const ROLE_BY_PREFIX: ReadonlyArray<{ prefix: string; role: Role }> = [
   { prefix: "/check-in", role: "GATE" },
 ];
 
-export function middleware(request: NextRequest): NextResponse {
+export function proxy(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
   const rule = ROLE_BY_PREFIX.find(({ prefix }) => pathname.startsWith(prefix));
   if (!rule) return NextResponse.next();
@@ -27,8 +27,6 @@ export function middleware(request: NextRequest): NextResponse {
     return NextResponse.redirect(url);
   }
 
-  // Sessão válida, papel errado: manda para /403, nunca para o login — a
-  // sessão em si não expirou, só não dá para essa área.
   if (user.role !== rule.role) {
     return NextResponse.redirect(new URL("/403", request.url));
   }
