@@ -1,17 +1,15 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-import { parseTheme, THEME_COOKIE } from "@/lib/theme";
+import { parseSessionUser, type Role } from "@/server/session";
 
-import { AppShell } from "@/components/layout/AppShell";
+const HOME_BY_ROLE: Record<Role, string> = {
+  CUSTOMER: "/events",
+  ORGANIZER: "/dashboard",
+  GATE: "/check-in",
+};
 
 export default async function HomePage() {
-  const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
-
-  return (
-    <AppShell title="Início" theme={theme}>
-      <p className="text-sm text-muted-foreground">
-        Fundação do projeto. As telas chegam a partir do epic 02.
-      </p>
-    </AppShell>
-  );
+  const user = parseSessionUser((await cookies()).get("vz_user")?.value);
+  redirect(user ? HOME_BY_ROLE[user.role] : "/login");
 }

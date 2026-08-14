@@ -22,7 +22,7 @@ Progresso do projeto, agrupado por epic. Derivado de
 | [05 — Ingressos](#05--ingressos) | `feat/05-ingressos` | — | ✅ 4/4 |
 | [06 — Portaria](#06--portaria) | `feat/06-portaria` | — | ✅ 6/6 |
 | [07 — Dashboard organizador](#07--dashboard-organizador) | `feat/07-dashboard` | — | ✅ 6/6 |
-| [08 — Entrega](#08--entrega) | `docs/08-entrega` | — | ⬜ 0/4 |
+| [08 — Entrega](#08--entrega) | `docs/08-entrega` | — | ✅ 4/4 |
 
 **Nota sobre a ordem.** O epic `02` (UI kit) entra **antes de qualquer tela de
 produto**. Por isso as telas de login e cadastro estão em `02`, não em `01`:
@@ -171,9 +171,9 @@ Spec de feature a escrever: `specs/007-dashboard.md`.
 
 ## 08 — Entrega
 
-- [ ] **08.1** README: badges de tecnologia, como rodar, decisões, estratégia de testes e próximos passos (E2E com Playwright)
-- [ ] **08.2** `DECISIONS.md` consolidado, com o porquê de cada escolha não-óbvia
-- [ ] **08.3** `docs/USO-DE-IA.md`: o que foi feito com IA, com quais ferramentas, e o que foi feito sem
-- [ ] **08.4** Revisão final: `lint`, `typecheck`, `test`, `build`, navegação por teclado e conferência contra o enunciado
+- [x] **08.1** README: badges de tecnologia, como rodar, decisões, estratégia de testes e próximos passos (E2E com Playwright)
+- [x] **08.2** `DECISIONS.md` consolidado, com o porquê de cada escolha não-óbvia
+- [x] **08.3** `docs/USO-DE-IA.md`: o que foi feito com IA, com quais ferramentas, e o que foi feito sem
+- [x] **08.4** Revisão final: `lint`, `typecheck`, `test`, `build`, navegação por teclado e conferência contra o enunciado
 
 **Pronto quando:** alguém clona o repositório, segue o README e chega a um check-in validado sem perguntar nada.
