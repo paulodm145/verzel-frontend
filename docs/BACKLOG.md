@@ -16,11 +16,11 @@ Progresso do projeto, agrupado por epic. Derivado de
 |---|---|---|---|
 | [00 — Fundação](#00--fundação) | `feat/00-fundacao` | [plano](plans/2026-08-13-00-fundacao.md) | ✅ 11/11 |
 | [01 — Auth BFF](#01--auth-bff) | `feat/01-auth-bff` | — | ✅ 9/9 |
-| [02 — UI kit](#02--ui-kit) | `feat/02-ui-kit` | — | ⬜ 0/10 |
+| [02 — UI kit](#02--ui-kit) | `feat/02-ui-kit` | — | 🟨 9/10 |
 | [03 — Catálogo e eventos](#03--catálogo-e-eventos) | `feat/03-eventos` | — | ⬜ 0/6 |
 | [04 — Reserva e pagamento](#04--reserva-e-pagamento) | `feat/04-reserva` | — | ⬜ 0/7 |
 | [05 — Ingressos](#05--ingressos) | `feat/05-ingressos` | — | ✅ 4/4 |
-| [06 — Portaria](#06--portaria) | `feat/06-portaria` | — | ⬜ 0/6 |
+| [06 — Portaria](#06--portaria) | `feat/06-portaria` | — | ✅ 6/6 |
 | [07 — Dashboard organizador](#07--dashboard-organizador) | `feat/07-dashboard` | — | ⬜ 0/6 |
 | [08 — Entrega](#08--entrega) | `docs/08-entrega` | — | ⬜ 0/4 |
 
@@ -77,16 +77,16 @@ Spec: [seção 2](specs/000-fundacao-arquitetura.md).
 Os componentes que todas as telas consomem. Entra antes das telas de produto.
 Spec: [seção 4](specs/000-fundacao-arquitetura.md).
 
-- [ ] **02.1** `Modal` com `Modal.Header`/`Body`/`Footer`, `size` (`sm`/`md`/`lg`/`xl`) e `staticBackdrop`, sobre o Dialog do Radix
-- [ ] **02.2** `useConfirm()` imperativo, com tom `destructive`
-- [ ] **02.3** `<Form>` com `zodResolver` e contexto; `FormInput`, `FormPassword`
-- [ ] **02.4** `FormSelect`, `FormTextarea`, `FormNumber`, `FormMoney` (BRL, envia número), `FormDateTime` (ISO UTC)
-- [ ] **02.5** `useApiFormErrors` + `lib/field-labels.ts`: `details[].path` vira erro de campo traduzido; `(corpo)` e caminhos órfãos vão ao erro geral
-- [ ] **02.6** `DataTable` base: colunas tipadas, ordenação, paginação server-side (`skip`/`take`, `take` ≤ 50), estados carregando/vazio/erro
-- [ ] **02.7** `DataTable` toolbar: busca com debounce, visibilidade de colunas, `rowActions` inline
-- [ ] **02.8** `AsyncBoundary`, `EmptyState`, `ErrorState` (mostrando `message` da API e `requestId`)
-- [ ] **02.9** Telas de login e cadastro — primeiros consumidores do kit
-- [ ] **02.10** Tela `/403` de permissão insuficiente
+- [x] **02.1** `Modal` com `Modal.Header`/`Body`/`Footer`, `size` (`sm`/`md`/`lg`/`xl`) e `staticBackdrop`, sobre o Dialog do Radix
+- [x] **02.2** `useConfirm()` imperativo, com tom `destructive`
+- [x] **02.3** `<Form>` com `zodResolver` e contexto; `FormInput`, `FormPassword`
+- [x] **02.4** `FormSelect`, `FormTextarea`, `FormNumber`, `FormMoney` (BRL, envia número), `FormDateTime` (ISO UTC)
+- [x] **02.5** `useApiFormErrors` + `lib/field-labels.ts`: `details[].path` vira erro de campo traduzido; `(corpo)` e caminhos órfãos vão ao erro geral
+- [x] **02.6** `DataTable` base: colunas tipadas, ordenação, paginação server-side (`skip`/`take`, `take` ≤ 50), estados carregando/vazio/erro
+- [x] **02.7** `DataTable` toolbar: busca com debounce, visibilidade de colunas, `rowActions` inline
+- [x] **02.8** `AsyncBoundary`, `EmptyState`, `ErrorState` (mostrando `message` da API e `requestId`)
+- [ ] **02.9** Telas de login e cadastro — primeiros consumidores do kit (depende dos hooks `useLogin`/`useRegister` do epic 01; agendado à parte)
+- [x] **02.10** Tela `/403` de permissão insuficiente
 
 **Pronto quando:** dá para logar e cadastrar pela UI, o kit tem testes de `Modal`, `useApiFormErrors` e `DataTable`, e nenhuma tela tem `<input>` solto.
 
@@ -143,12 +143,12 @@ Contratos: [`05-ingressos-e-portaria.md`](doc-frontend/05-ingressos-e-portaria.m
 
 Spec de feature a escrever: `specs/006-portaria.md`.
 
-- [ ] **06.1** `features/check-in`: service e `useValidateTicket` (`POST /gate/validate` responde sempre 200 — o hook nunca lança)
-- [ ] **06.2** `ValidationResult`: 4 estados em tela cheia, cada um com cor **e** ícone próprios, contraste AA nos dois temas, com testes
-- [ ] **06.3** `QRScanner` com `BarcodeDetector` nativo: ciclo de vida da câmera e trava de 2 s entre leituras, com testes
-- [ ] **06.4** Fallback `zxing-wasm` carregado sob demanda, atrás da mesma interface
-- [ ] **06.5** `ManualCodeInput` sempre visível, com máscara `TKT-XXXX-XXXX-XXXX`
-- [ ] **06.6** Vibração e som opcionais na confirmação
+- [x] **06.1** `features/check-in`: service e `useValidateTicket` (`POST /gate/validate` responde sempre 200 — o hook nunca lança)
+- [x] **06.2** `ValidationResult`: 4 estados em tela cheia, cada um com cor **e** ícone próprios, contraste AA nos dois temas, com testes
+- [x] **06.3** `QRScanner` com `BarcodeDetector` nativo: ciclo de vida da câmera e trava de 2 s entre leituras, com testes
+- [x] **06.4** Fallback `zxing-wasm` carregado sob demanda, atrás da mesma interface
+- [x] **06.5** `ManualCodeInput` sempre visível, com máscara `TKT-XXXX-XXXX-XXXX`
+- [x] **06.6** Vibração e som opcionais na confirmação
 
 **Pronto quando:** ler o mesmo QR duas vezes em menos de 2 s não mostra "já utilizado" logo após "liberado", e a tela é legível a um braço de distância.
 
