@@ -19,6 +19,11 @@ describe("STALE_TIME", () => {
 });
 
 describe("createQueryClient", () => {
+  it("staleTime padrão é 0: esquecer o override custa uma requisição extra, nunca dado velho", () => {
+    const client = createQueryClient();
+    expect(client.getDefaultOptions().queries?.staleTime).toBe(0);
+  });
+
   const retry = () => {
     const client = createQueryClient();
     return client.getDefaultOptions().queries?.retry as (
