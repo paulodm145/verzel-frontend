@@ -14,10 +14,6 @@ export function eventQueryOptions(eventId: string): UseQueryOptions<EventDetail>
   };
 }
 
-/**
- * GET /events/:id (pública) — 404 tanto para inexistente quanto para
- * rascunho de outro organizador; a tela de detalhe trata os dois igual.
- */
 export function useEvent(eventId: string) {
   return useQuery(eventQueryOptions(eventId));
 }
