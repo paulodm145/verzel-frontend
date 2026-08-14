@@ -1,13 +1,17 @@
 import { httpClient } from "@/lib/http-client";
 
-import type { EventDetail, EventListResponse, EventsQueryParams, SeatMapResponse } from "../types";
+import type {
+  CreateEventInput,
+  Event,
+  EventDetail,
+  EventListParams,
+  EventListResponse,
+  SeatMapResponse,
+  UpdateEventInput,
+} from "../types";
 
-/**
- * Chamadas HTTP puras do domínio "eventos". Sem cache, sem estado — isso é
- * responsabilidade dos hooks (useEvents, useEvent, useSeatMap) por cima.
- */
 export const eventsService = {
-  async getEvents(params: EventsQueryParams, signal?: AbortSignal): Promise<EventListResponse> {
+  async getEvents(params: EventListParams, signal?: AbortSignal): Promise<EventListResponse> {
     const { data } = await httpClient.get<EventListResponse>("/events", { params, signal });
     return data;
   },
@@ -19,6 +23,31 @@ export const eventsService = {
 
   async getEventSeats(id: string, signal?: AbortSignal): Promise<SeatMapResponse> {
     const { data } = await httpClient.get<SeatMapResponse>(`/events/${id}/seats`, { signal });
+    return data;
+  },
+
+  async listMine(params: EventListParams): Promise<EventListResponse> {
+    const { data } = await httpClient.get<EventListResponse>("/events/mine", { params });
+    return data;
+  },
+
+  async create(input: CreateEventInput): Promise<Event> {
+    const { data } = await httpClient.post<Event>("/events", input);
+    return data;
+  },
+
+  async update(id: string, input: UpdateEventInput): Promise<Event> {
+    const { data } = await httpClient.patch<Event>(`/events/${id}`, input);
+    return data;
+  },
+
+  async publish(id: string): Promise<Event> {
+    const { data } = await httpClient.post<Event>(`/events/${id}/publish`);
+    return data;
+  },
+
+  async cancel(id: string): Promise<Event> {
+    const { data } = await httpClient.post<Event>(`/events/${id}/cancel`);
     return data;
   },
 };

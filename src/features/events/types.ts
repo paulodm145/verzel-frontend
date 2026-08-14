@@ -1,44 +1,43 @@
-/** Tipos do domínio "eventos" — espelham o contrato de docs/doc-frontend/03-eventos-e-catalogo.md. */
+import type { CatalogSourceType } from "@/features/catalog/types";
 
-export type EventSourceType = "SHOW" | "MOVIE";
+export type EventSourceType = CatalogSourceType;
 export type EventStatus = "DRAFT" | "PUBLISHED" | "CANCELED";
 
-export interface EventSummary {
+export interface Event {
   id: string;
   organizerId: string;
   sourceType: EventSourceType;
   externalId: string;
   title: string;
-  /** Pode vir null — nem todo item de catálogo tem sinopse. */
   description: string | null;
-  /** Pode vir null — nem todo item de catálogo tem imagem. */
   imageUrl: string | null;
-  /** Pode vir null quando o provedor externo não informa data. */
   date: string | null;
   venue: string;
   capacity: number;
-  /** Número, não string — nunca formatar sem passar por Intl.NumberFormat. */
   price: number;
   status: EventStatus;
   createdAt: string;
 }
 
-/** GET /events/:id devolve o evento mais a contagem de assentos livres. */
-export interface EventDetail extends EventSummary {
+export type EventSummary = Event;
+
+export interface EventDetail extends Event {
   availableSeatsCount: number;
 }
 
-export interface EventListResponse {
-  items: EventSummary[];
-  total: number;
-  skip: number;
-  take: number;
-}
-
-export interface EventsQueryParams {
+export interface EventListParams {
   search?: string;
   skip?: number;
   take?: number;
+}
+
+export type EventsQueryParams = EventListParams;
+
+export interface EventListResponse {
+  items: Event[];
+  total: number;
+  skip: number;
+  take: number;
 }
 
 export interface Seat {
@@ -52,3 +51,17 @@ export interface SeatMapResponse {
   total: number;
   availableCount: number;
 }
+
+export interface CreateEventInput {
+  externalId: string;
+  sourceType: CatalogSourceType;
+  title: string;
+  description: string | null;
+  imageUrl: string | null;
+  date: string;
+  venue: string;
+  capacity: number;
+  price: number;
+}
+
+export type UpdateEventInput = Partial<Omit<CreateEventInput, "externalId" | "sourceType">>;
