@@ -21,7 +21,7 @@ Progresso do projeto, agrupado por epic. Derivado de
 | [04 — Reserva e pagamento](#04--reserva-e-pagamento) | `feat/04-reserva` | — | ✅ 7/7 |
 | [05 — Ingressos](#05--ingressos) | `feat/05-ingressos` | — | ✅ 4/4 |
 | [06 — Portaria](#06--portaria) | `feat/06-portaria` | — | ✅ 6/6 |
-| [07 — Dashboard organizador](#07--dashboard-organizador) | `feat/07-dashboard` | — | ⬜ 0/6 |
+| [07 — Dashboard organizador](#07--dashboard-organizador) | `feat/07-dashboard` | — | ✅ 6/6 |
 | [08 — Entrega](#08--entrega) | `docs/08-entrega` | — | ⬜ 0/4 |
 
 **Nota sobre a ordem.** O epic `02` (UI kit) entra **antes de qualquer tela de
@@ -158,12 +158,12 @@ Spec de feature a escrever: `specs/006-portaria.md`.
 
 Spec de feature a escrever: `specs/007-dashboard.md`.
 
-- [ ] **07.1** `useMyEvents`, definição de colunas e dashboard sobre a `DataTable`
-- [ ] **07.2** `features/catalog`: `useCatalogSearch` (mínimo 2 caracteres, debounce, `staleTime` 5 min, `page` começando em **1**)
-- [ ] **07.3** `CatalogSearchResults` e `/dashboard/new` criando via `POST /events`
-- [ ] **07.4** `EventForm` de criar e editar, com `FormMoney` e `FormDateTime`
-- [ ] **07.5** `/dashboard/[id]` com `PATCH`
-- [ ] **07.6** Publicar e cancelar via `useConfirm`, invalidando `GET /events`
+- [x] **07.1** `useMyEvents`, definição de colunas e dashboard sobre a `DataTable`
+- [x] **07.2** `features/catalog`: `useCatalogSearch` (mínimo 2 caracteres, debounce, `staleTime` 5 min, `page` começando em **1**)
+- [x] **07.3** `CatalogSearchResults` e `/dashboard/new` criando via `POST /events`
+- [x] **07.4** `EventForm` de criar e editar, com `FormMoney` e `FormDateTime`
+- [x] **07.5** `/dashboard/[id]` com `PATCH`
+- [x] **07.6** Publicar e cancelar via `useConfirm`, invalidando `GET /events`
 
 **Pronto quando:** o organizador cria um evento a partir do catálogo, publica, e o evento aparece na listagem pública.
 
