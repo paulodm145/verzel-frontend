@@ -14,8 +14,8 @@ Progresso do projeto, agrupado por epic. Derivado de
 
 | Epic | Branch | Plano | Status |
 |---|---|---|---|
-| [00 — Fundação](#00--fundação) | `feat/00-fundacao` | [plano](plans/2026-08-13-00-fundacao.md) | ⬜ 0/11 |
-| [01 — Auth BFF](#01--auth-bff) | `feat/01-auth-bff` | — | ⬜ 0/9 |
+| [00 — Fundação](#00--fundação) | `feat/00-fundacao` | [plano](plans/2026-08-13-00-fundacao.md) | ✅ 11/11 |
+| [01 — Auth BFF](#01--auth-bff) | `feat/01-auth-bff` | — | ✅ 9/9 |
 | [02 — UI kit](#02--ui-kit) | `feat/02-ui-kit` | — | ⬜ 0/10 |
 | [03 — Catálogo e eventos](#03--catálogo-e-eventos) | `feat/03-eventos` | — | ⬜ 0/6 |
 | [04 — Reserva e pagamento](#04--reserva-e-pagamento) | `feat/04-reserva` | — | ⬜ 0/7 |
@@ -37,17 +37,17 @@ solto e serem refeitas depois.
 Scaffold, ferramental, tema e casca da aplicação. Sem tela de produto.
 Spec: [seções 3, 5, 9, 10](specs/000-fundacao-arquitetura.md).
 
-- [ ] **00.1** Scaffold do Next.js (App Router, TypeScript, Tailwind, `src/`, alias `@/*`), rodando na porta 3001
-- [ ] **00.2** ESLint + Prettier com ordenação de imports; scripts `lint`, `format`, `typecheck`
-- [ ] **00.3** Vitest + Testing Library + MSW + jsdom; script `test`; teste de fumaça verde
-- [ ] **00.4** `shadcn/ui` inicializado com tokens de cor sóbrios (AdminLTE), light e dark, contraste AA
-- [ ] **00.5** Tema por cookie: provider server-side, `ThemeToggle`, três estados (`light`/`dark`/`system`), sem flash
-- [ ] **00.6** `AppShell`: sidebar fixa, topbar e área de conteúdo, com densidade de painel
-- [ ] **00.7** CI no GitHub Actions: `lint`, `typecheck`, `test`, `build` a cada PR
-- [ ] **00.8** `.env.example` e seção "como rodar" no README (o README completo é o epic 08)
-- [ ] **00.9** `lib/api-errors.ts`: classe `ApiError` e parse de `{ error: { code, message, details, requestId } }`, com testes
-- [ ] **00.10** `lib/query-client.ts`: `QueryClient` com `staleTime` por rota conforme `07-performance.md` (atenção: `seats` = 0)
-- [ ] **00.11** `lib/messages.ts` e `lib/field-labels.ts`: esqueleto de strings pt-BR por domínio
+- [x] **00.1** Scaffold do Next.js (App Router, TypeScript, Tailwind, `src/`, alias `@/*`), rodando na porta 3001
+- [x] **00.2** ESLint + Prettier com ordenação de imports; scripts `lint`, `format`, `typecheck`
+- [x] **00.3** Vitest + Testing Library + MSW + jsdom; script `test`; teste de fumaça verde
+- [x] **00.4** `shadcn/ui` inicializado com tokens de cor sóbrios (AdminLTE), light e dark, contraste AA
+- [x] **00.5** Tema por cookie: provider server-side, `ThemeToggle`, três estados (`light`/`dark`/`system`), sem flash
+- [x] **00.6** `AppShell`: sidebar fixa, topbar e área de conteúdo, com densidade de painel
+- [x] **00.7** CI no GitHub Actions: `lint`, `typecheck`, `test`, `build` a cada PR
+- [x] **00.8** `.env.example` e seção "como rodar" no README (o README completo é o epic 08)
+- [x] **00.9** `lib/api-errors.ts`: classe `ApiError` e parse de `{ error: { code, message, details, requestId } }`, com testes
+- [x] **00.10** `lib/query-client.ts`: `QueryClient` com `staleTime` por rota conforme `07-performance.md` (atenção: `seats` = 0)
+- [x] **00.11** `lib/messages.ts` e `lib/field-labels.ts`: esqueleto de strings pt-BR por domínio
 
 **Pronto quando:** `npm run lint && npm run typecheck && npm run test && npm run build` passam, a casca abre nos dois temas sem flash, e o CI está verde no PR.
 
@@ -58,15 +58,15 @@ Spec: [seções 3, 5, 9, 10](specs/000-fundacao-arquitetura.md).
 Sessão em cookies `httpOnly`, com o Next atuando como BFF.
 Spec: [seção 2](specs/000-fundacao-arquitetura.md).
 
-- [ ] **01.1** `server/api-client.ts`: fetch de servidor para a API, injeta `Bearer`, converte erro em `ApiError`
-- [ ] **01.2** `server/session.ts`: gravar, ler e limpar `vz_at`, `vz_rt`, `vz_renew_at`, `vz_user`, com as flags corretas (`path=/api/auth` no `vz_rt`)
-- [ ] **01.3** `server/refresh.ts`: single-flight, com teste provando que duas chamadas concorrentes geram **um** POST a `/auth/refresh`
-- [ ] **01.4** `server/proxy.ts`: renovação proativa por `vz_renew_at`, retry único em `401`, `403` sem renovar, allowlist de cabeçalhos, `Idempotency-Key` na ida e `Idempotency-Replayed` na volta
-- [ ] **01.5** Route handlers `/api/auth/login`, `/register`, `/logout`, `/session` (com reidratação via `/auth/me` quando faltar `vz_user`)
-- [ ] **01.6** Route handler `/api/v/[...path]`: proxy genérico para o resto da API
-- [ ] **01.7** `lib/http-client.ts`: axios com `baseURL: "/api/v"`, interceptor de `ApiError` e redirecionamento em `401` — **sem** lógica de token
-- [ ] **01.8** `features/auth`: service, `useLogin`, `useRegister`, `useLogout`, `useSession`
-- [ ] **01.9** `middleware.ts`: protege por papel; sem sessão vai a `/login?next=…`, papel errado vai a `/403`
+- [x] **01.1** `server/api-client.ts`: fetch de servidor para a API, injeta `Bearer`, converte erro em `ApiError`
+- [x] **01.2** `server/session.ts`: gravar, ler e limpar `vz_at`, `vz_rt`, `vz_renew_at`, `vz_user`, com as flags corretas (`path=/api/auth` no `vz_rt`)
+- [x] **01.3** `server/refresh.ts`: single-flight, com teste provando que duas chamadas concorrentes geram **um** POST a `/auth/refresh`
+- [x] **01.4** `server/proxy.ts`: renovação proativa por `vz_renew_at`, retry único em `401`, `403` sem renovar, allowlist de cabeçalhos, `Idempotency-Key` na ida e `Idempotency-Replayed` na volta
+- [x] **01.5** Route handlers `/api/auth/login`, `/register`, `/logout`, `/session` (com reidratação via `/auth/me` quando faltar `vz_user`)
+- [x] **01.6** Route handler `/api/v/[...path]`: proxy genérico para o resto da API
+- [x] **01.7** `lib/http-client.ts`: axios com `baseURL: "/api/v"`, interceptor de `ApiError` e redirecionamento em `401` — **sem** lógica de token
+- [x] **01.8** `features/auth`: service, `useLogin`, `useRegister`, `useLogout`, `useSession`
+- [x] **01.9** `middleware.ts`: protege por papel; sem sessão vai a `/login?next=…`, papel errado vai a `/403`
 
 **Pronto quando:** login pela API real grava os cookies, nenhum token aparece em `document.cookie` nem no bundle, o refresh proativo dispara antes do `401`, e os testes de concorrência e de `403` passam.
 
