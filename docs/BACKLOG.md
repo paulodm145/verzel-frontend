@@ -23,6 +23,7 @@ Progresso do projeto, agrupado por epic. Derivado de
 | [06 — Portaria](#06--portaria) | `feat/06-portaria` | — | ✅ 6/6 |
 | [07 — Dashboard organizador](#07--dashboard-organizador) | `feat/07-dashboard` | — | ✅ 6/6 |
 | [08 — Entrega](#08--entrega) | `docs/08-entrega` | — | ✅ 4/4 |
+| [09 — Experiência pública e layout](#09--experiência-pública-e-layout) | `feat/09-experiencia-publica-layout` | [plano](plans/2026-08-14-09-experiencia-publica-layout.md) | ⬜ 0/6 |
 
 **Nota sobre a ordem.** O epic `02` (UI kit) entra **antes de qualquer tela de
 produto**. Por isso as telas de login e cadastro estão em `02`, não em `01`:
@@ -177,3 +178,20 @@ Spec de feature a escrever: `specs/007-dashboard.md`.
 - [x] **08.4** Revisão final: `lint`, `typecheck`, `test`, `build`, navegação por teclado e conferência contra o enunciado
 
 **Pronto quando:** alguém clona o repositório, segue o README e chega a um check-in validado sem perguntar nada.
+
+---
+
+## 09 — Experiência pública e layout
+
+Revisão orientada pelo uso real após a primeira entrega: vitrine pública, compra encontrável, pôsteres preservados e navegação exclusiva por papel.
+
+Spec: [`specs/009-experiencia-publica-layout.md`](specs/009-experiencia-publica-layout.md).
+
+- [ ] **09.1** Tornar catálogo e detalhe públicos, mantendo checkout protegido para `CUSTOMER`
+- [ ] **09.2** Criar shell público e home com descoberta de eventos
+- [ ] **09.3** Corrigir cards e detalhe para pôster `2:3` sem recorte
+- [ ] **09.4** Conectar detalhe, autenticação e checkout em uma jornada de compra contínua
+- [ ] **09.5** Separar navegação de cliente, organizador e portaria; remover placeholders bloqueados
+- [ ] **09.6** Revisar responsividade, acessibilidade, temas, testes e documentação visual
+
+**Pronto quando:** visitante navega até um evento, autentica ao comprar, conclui o ingresso e nenhum papel vê ferramentas que não lhe pertencem.
