@@ -19,7 +19,7 @@ Progresso do projeto, agrupado por epic. Derivado de
 | [02 — UI kit](#02--ui-kit) | `feat/02-ui-kit` | — | ⬜ 0/10 |
 | [03 — Catálogo e eventos](#03--catálogo-e-eventos) | `feat/03-eventos` | — | ⬜ 0/6 |
 | [04 — Reserva e pagamento](#04--reserva-e-pagamento) | `feat/04-reserva` | — | ⬜ 0/7 |
-| [05 — Ingressos](#05--ingressos) | `feat/05-ingressos` | — | ⬜ 0/4 |
+| [05 — Ingressos](#05--ingressos) | `feat/05-ingressos` | — | ✅ 4/4 |
 | [06 — Portaria](#06--portaria) | `feat/06-portaria` | — | ⬜ 0/6 |
 | [07 — Dashboard organizador](#07--dashboard-organizador) | `feat/07-dashboard` | — | ⬜ 0/6 |
 | [08 — Entrega](#08--entrega) | `docs/08-entrega` | — | ⬜ 0/4 |
@@ -130,10 +130,10 @@ Contratos: [`04-reserva-e-pagamento.md`](doc-frontend/04-reserva-e-pagamento.md)
 Spec de feature a escrever: `specs/005-ingressos.md`.
 Contratos: [`05-ingressos-e-portaria.md`](doc-frontend/05-ingressos-e-portaria.md).
 
-- [ ] **05.1** `features/tickets`: service e `useMyTickets` usando o `event` embutido — **sem** chamar `/events/:id`
-- [ ] **05.2** `TicketCard` e página `/my-tickets`
-- [ ] **05.3** `QRCodeDisplay` com `QRCodeSVG`, `level="M"`, 256–320 px
-- [ ] **05.4** `useTicketByCode` e página pública `/ticket/[code]`, compartilhável sem sessão
+- [x] **05.1** `features/tickets`: service e `useMyTickets` usando o `event` embutido — **sem** chamar `/events/:id`
+- [x] **05.2** `TicketCard` e página `/my-tickets`
+- [x] **05.3** `QRCodeDisplay` com `QRCodeSVG`, `level="M"`, 256–320 px
+- [x] **05.4** `useTicketByCode` e página pública `/ticket/[code]`, compartilhável sem sessão
 
 **Pronto quando:** a aba de rede mostra **uma** requisição ao abrir `/my-tickets`, e `/ticket/[code]` abre em janela anônima.
 
