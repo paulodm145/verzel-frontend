@@ -16,8 +16,8 @@ Progresso do projeto, agrupado por epic. Derivado de
 |---|---|---|---|
 | [00 — Fundação](#00--fundação) | `feat/00-fundacao` | [plano](plans/2026-08-13-00-fundacao.md) | ✅ 11/11 |
 | [01 — Auth BFF](#01--auth-bff) | `feat/01-auth-bff` | — | ✅ 9/9 |
-| [02 — UI kit](#02--ui-kit) | `feat/02-ui-kit` | — | 🟨 9/10 |
-| [03 — Catálogo e eventos](#03--catálogo-e-eventos) | `feat/03-eventos` | — | ⬜ 0/6 |
+| [02 — UI kit](#02--ui-kit) | `feat/02-ui-kit` | — | ⬜ 0/10 |
+| [03 — Catálogo e eventos](#03--catálogo-e-eventos) | `feat/03-eventos` | — | ✅ 6/6 |
 | [04 — Reserva e pagamento](#04--reserva-e-pagamento) | `feat/04-reserva` | — | ⬜ 0/7 |
 | [05 — Ingressos](#05--ingressos) | `feat/05-ingressos` | — | ✅ 4/4 |
 | [06 — Portaria](#06--portaria) | `feat/06-portaria` | — | ✅ 6/6 |
@@ -97,12 +97,12 @@ Spec: [seção 4](specs/000-fundacao-arquitetura.md).
 Spec de feature a escrever: `specs/003-eventos.md`.
 Contratos: [`03-eventos-e-catalogo.md`](doc-frontend/03-eventos-e-catalogo.md).
 
-- [ ] **03.1** `features/events`: service, types e `useEvents` (`GET /events`, paginado)
-- [ ] **03.2** Lista `/events` com `EventCard` e paginação
-- [ ] **03.3** `EventFilters`: busca com debounce de 300–500 ms e `AbortController` cancelando a anterior
-- [ ] **03.4** `useEvent` e detalhe `/events/[id]`
-- [ ] **03.5** `useSeatMap` com `staleTime: 0` e `SeatMap` agrupado por fileira
-- [ ] **03.6** Detalhe e mapa carregados em paralelo; refetch ao focar a janela
+- [x] **03.1** `features/events`: service, types e `useEvents` (`GET /events`, paginado)
+- [x] **03.2** Lista `/events` com `EventCard` e paginação
+- [x] **03.3** `EventFilters`: busca com debounce de 300–500 ms e `AbortController` cancelando a anterior
+- [x] **03.4** `useEvent` e detalhe `/events/[id]`
+- [x] **03.5** `useSeatMap` com `staleTime: 0` e `SeatMap` agrupado por fileira
+- [x] **03.6** Detalhe e mapa carregados em paralelo; refetch ao focar a janela
 
 **Pronto quando:** a listagem pagina, a busca não dispara uma requisição por tecla, e o mapa nunca serve assento vendido a partir de cache.
 
