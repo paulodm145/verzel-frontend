@@ -41,6 +41,7 @@ function actionsColumn<TData extends RowData>(
             action.href ? (
               <Button
                 key={action.label}
+                nativeButton={false}
                 variant="ghost"
                 size="sm"
                 render={<Link href={action.href} />}
@@ -111,10 +112,27 @@ export function DataTable<TData, TValue = unknown>({
   const isEmpty = !isLoading && !error && rows.length === 0;
 
   return (
-    <div className="flex flex-col gap-2">
-      {toolbar && <DataTableToolbar table={table} config={toolbar} />}
+    // Card com header, corpo e footer demarcados — o padrão de card do
+    // AdminLTE. Antes a toolbar e a paginação flutuavam soltas fora da borda,
+    // sem indicar que pertenciam à tabela.
+    <div
+      className={cn(
+        "overflow-hidden rounded-lg border border-border bg-card",
+        isEmpty && "border-dashed",
+      )}
+    >
+      {toolbar && (
+        <div className="border-b border-border/60 bg-muted/40 px-2 py-2">
+          <DataTableToolbar table={table} config={toolbar} />
+        </div>
+      )}
 
-      <div className={cn("rounded-lg border border-border", isEmpty && "border-dashed")}>
+      {/*
+        A altura máxima é o que torna o cabeçalho fixo possível: `sticky` só
+        gruda em relação a um contêiner que realmente rola. Sem ela o thead
+        sairia de vista assim que a página rolasse.
+      */}
+      <div className="max-h-[calc(100dvh-18rem)] min-h-32 overflow-auto">
         <Table>
           <DataTableBody
             table={table}
@@ -129,11 +147,13 @@ export function DataTable<TData, TValue = unknown>({
       </div>
 
       {pagination && !isLoading && !error && (
-        <DataTablePagination
-          pagination={pagination}
-          totalCount={totalCount}
-          currentRowCount={rows.length}
-        />
+        <div className="border-t border-border/60 bg-muted/40 px-2 py-2">
+          <DataTablePagination
+            pagination={pagination}
+            totalCount={totalCount}
+            currentRowCount={rows.length}
+          />
+        </div>
       )}
     </div>
   );
