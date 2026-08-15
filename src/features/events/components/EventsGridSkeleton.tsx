@@ -4,12 +4,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function EventsGridSkeleton() {
   return (
     <div
-      className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
       aria-hidden="true"
     >
-      {Array.from({ length: 8 }, (_, index) => (
-        <div key={index} className="flex flex-col gap-2 rounded-lg border border-border p-2">
-          <Skeleton className="aspect-16/9 w-full" />
+      {Array.from({ length: 10 }, (_, index) => (
+        <div key={index} className="flex flex-col gap-2">
+          <Skeleton className="aspect-2/3 w-full rounded-media" />
           <Skeleton className="h-4 w-4/5" />
           <Skeleton className="h-3 w-2/5" />
           <Skeleton className="h-3 w-1/2" />

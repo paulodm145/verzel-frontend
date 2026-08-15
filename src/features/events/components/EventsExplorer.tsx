@@ -14,10 +14,8 @@ import { EventsErrorState } from "./EventsErrorState";
 import { EventsGridSkeleton } from "./EventsGridSkeleton";
 import { EventsPagination } from "./EventsPagination";
 
-const TAKE = 20;
-
 /** Orquestra busca, paginação e os quatro estados da listagem pública de eventos. */
-export function EventsExplorer() {
+export function EventsExplorer({ pageSize = 20 }: { pageSize?: number }) {
   const [search, setSearch] = useState("");
   const [skip, setSkip] = useState(0);
   const debouncedSearch = useDebouncedValue(search, 400);
@@ -25,7 +23,7 @@ export function EventsExplorer() {
   const { data, isLoading, isError, error } = useEvents({
     search: debouncedSearch || undefined,
     skip,
-    take: TAKE,
+    take: pageSize,
   });
 
   function handleSearchChange(value: string) {
@@ -52,12 +50,12 @@ export function EventsExplorer() {
 
       {!isLoading && !isError && data && data.items.length > 0 && (
         <>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {data.items.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>
-          <EventsPagination skip={skip} take={TAKE} total={data.total} onSkipChange={setSkip} />
+          <EventsPagination skip={skip} take={pageSize} total={data.total} onSkipChange={setSkip} />
         </>
       )}
     </div>

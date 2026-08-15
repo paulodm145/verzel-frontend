@@ -8,6 +8,7 @@ import { PlusIcon } from "lucide-react";
 import { DataTable } from "@/components/data-table/DataTable";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { ErrorState } from "@/components/feedback/ErrorState";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { useConfirm } from "@/components/modal/useConfirm";
 import { Button } from "@/components/ui/button";
 
@@ -56,17 +57,18 @@ export function EventsDashboard() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between gap-2">
-        <div>
-          <h1 className="text-lg font-semibold">Meus eventos</h1>
-          <p className="text-sm text-muted-foreground">Crie, publique e cancele seus eventos.</p>
-        </div>
-        <Button render={<Link href="/dashboard/new" />}>
-          <PlusIcon />
-          Novo evento
-        </Button>
-      </div>
+    <div className="flex flex-col gap-4">
+      <PageHeader
+        eyebrow="Gestão"
+        title="Meus eventos"
+        description="Crie, publique e cancele seus eventos."
+        actions={
+          <Button nativeButton={false} render={<Link href="/dashboard/new" />}>
+            <PlusIcon />
+            Novo evento
+          </Button>
+        }
+      />
 
       {actionError !== null && <ErrorState error={actionError} />}
 
@@ -90,7 +92,7 @@ export function EventsDashboard() {
             title="Nenhum evento ainda"
             description="Crie seu primeiro evento a partir do catálogo."
             action={
-              <Button size="sm" render={<Link href="/dashboard/new" />}>
+              <Button nativeButton={false} size="sm" render={<Link href="/dashboard/new" />}>
                 Novo evento
               </Button>
             }

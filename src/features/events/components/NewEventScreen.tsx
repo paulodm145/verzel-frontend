@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CatalogSearchResults } from "@/features/catalog/components/CatalogSearchResults";
@@ -27,6 +28,11 @@ export function NewEventScreen() {
   if (selected) {
     return (
       <div className="flex flex-col gap-4">
+        <PageHeader
+          eyebrow="Gestão · Novo evento"
+          title="Detalhes do evento"
+          description="Ajuste data, local, capacidade e preço antes de criar."
+        />
         <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 p-3">
           <div>
             <p className="text-sm font-medium">{selected.title}</p>
@@ -54,13 +60,12 @@ export function NewEventScreen() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <div>
-        <h1 className="text-lg font-semibold">Novo evento</h1>
-        <p className="text-sm text-muted-foreground">
-          Busque no catálogo (shows e filmes) e escolha um item para criar o evento.
-        </p>
-      </div>
+    <div className="flex flex-col gap-4">
+      <PageHeader
+        eyebrow="Gestão"
+        title="Novo evento"
+        description="Busque no catálogo (shows e filmes) e escolha um item para criar o evento."
+      />
       <Input
         value={term}
         onChange={(event) => {

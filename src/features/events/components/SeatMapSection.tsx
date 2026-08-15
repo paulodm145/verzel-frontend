@@ -25,7 +25,7 @@ export function SeatMapSection({ eventId }: SeatMapSectionProps) {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-2 rounded-lg border border-border p-3">
+      <div className="flex flex-col gap-2 rounded-xl bg-muted/60 p-4">
         <Skeleton className="h-4 w-32" />
         <Skeleton className="h-40 w-full" />
       </div>
