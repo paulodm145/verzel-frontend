@@ -61,4 +61,16 @@ describe("proxy de rotas", () => {
 
     expect(response.headers.get("location")).toBeNull();
   });
+
+  it.each(["/events", "/events/evento-1"])("mantém catálogo público em %s", (pathname) => {
+    const response = proxy(buildRequest(pathname));
+    expect(response.headers.get("location")).toBeNull();
+  });
+
+  it("protege apenas o checkout de eventos para CUSTOMER", () => {
+    const response = proxy(buildRequest("/events/evento-1/checkout"));
+    expect(response.headers.get("location")).toBe(
+      "http://localhost:3001/login?next=%2Fevents%2Fevento-1%2Fcheckout",
+    );
+  });
 });

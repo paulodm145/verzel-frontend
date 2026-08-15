@@ -42,13 +42,13 @@ describe("proxyToApi", () => {
           expiresIn: 900,
         });
       }),
-      http.get("http://localhost:3000/events", ({ request }) => {
+      http.get("http://localhost:3000/tickets/mine", ({ request }) => {
         authorizationRecebida = request.headers.get("authorization");
         return HttpResponse.json({ items: [], total: 0, skip: 0, take: 20 });
       }),
     );
 
-    const request = buildRequest("/events", {
+    const request = buildRequest("/tickets/mine", {
       cookies: {
         vz_at: "at-velho",
         vz_rt: "rt-velho",
@@ -57,7 +57,7 @@ describe("proxyToApi", () => {
       },
     });
 
-    const response = await proxyToApi(request, ["events"]);
+    const response = await proxyToApi(request, ["tickets", "mine"]);
 
     expect(refreshCalls).toBe(1);
     expect(authorizationRecebida).toBe("Bearer at-novo");
@@ -153,17 +153,43 @@ describe("proxyToApi", () => {
     expect(xCustomRecebido).toBeNull();
   });
 
-  it("sem accessToken responde 401 sem chamar a API", async () => {
-    let apiChamada = false;
+  it("encaminha catálogo público sem accessToken e sem Authorization", async () => {
+    let authorizationRecebida: string | null = "não deveria permanecer";
     server.use(
-      http.get("http://localhost:3000/events", () => {
-        apiChamada = true;
+      http.get("http://localhost:3000/events", ({ request }) => {
+        authorizationRecebida = request.headers.get("authorization");
         return HttpResponse.json({ items: [], total: 0, skip: 0, take: 20 });
       }),
     );
 
     const request = buildRequest("/events", {});
     const response = await proxyToApi(request, ["events"]);
+
+    expect(response.status).toBe(200);
+    expect(authorizationRecebida).toBeNull();
+  });
+
+  it.each([
+    ["/events/evento-1", ["events", "evento-1"]],
+    ["/events/evento-1/seats", ["events", "evento-1", "seats"]],
+  ] as const)("encaminha rota pública %s sem sessão", async (path, segments) => {
+    server.use(http.get(`http://localhost:3000${path}`, () => HttpResponse.json({ id: "ok" })));
+
+    const response = await proxyToApi(buildRequest(path), [...segments]);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("mantém /events/mine protegido sem accessToken", async () => {
+    let apiChamada = false;
+    server.use(
+      http.get("http://localhost:3000/events/mine", () => {
+        apiChamada = true;
+        return HttpResponse.json({ items: [] });
+      }),
+    );
+
+    const response = await proxyToApi(buildRequest("/events/mine"), ["events", "mine"]);
 
     expect(response.status).toBe(401);
     expect(apiChamada).toBe(false);

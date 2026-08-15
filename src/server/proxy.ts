@@ -22,6 +22,16 @@ const FORWARDED_REQUEST_HEADERS = ["content-type", "idempotency-key"];
 const EXPOSED_RESPONSE_HEADERS = ["idempotency-replayed"];
 const BODYLESS_METHODS = new Set(["GET", "HEAD"]);
 
+function isPublicEventsRequest(method: string, segments: string[]): boolean {
+  if (method !== "GET" || segments[0] !== "events") return false;
+
+  return (
+    segments.length === 1 ||
+    (segments.length === 2 && segments[1] !== "mine") ||
+    (segments.length === 3 && segments[2] === "seats")
+  );
+}
+
 function pickForwardedHeaders(source: Headers): Headers {
   const headers = new Headers();
   for (const name of FORWARDED_REQUEST_HEADERS) {
@@ -54,6 +64,17 @@ async function forwardResponse(response: Response): Promise<NextResponse> {
 }
 
 export async function proxyToApi(request: NextRequest, segments: string[]): Promise<NextResponse> {
+  const path = `/${segments.join("/")}`;
+  const search = request.nextUrl.search;
+  const headers = pickForwardedHeaders(request.headers);
+
+  // Catálogo, detalhe e mapa de assentos são públicos na API. Encaminhá-los
+  // sem Bearer evita que ausência ou expiração de sessão transforme a
+  // vitrine em uma rota de login. Mutação e /events/mine continuam privadas.
+  if (isPublicEventsRequest(request.method, segments)) {
+    return forwardResponse(await apiRaw(`${path}${search}`, { method: request.method, headers }));
+  }
+
   const session = readSessionCookies(request);
   if (!session.accessToken) return unauthorized();
 
@@ -66,9 +87,6 @@ export async function proxyToApi(request: NextRequest, segments: string[]): Prom
     if (fresh) ({ accessToken, refreshToken, expiresIn } = fresh);
   }
 
-  const path = `/${segments.join("/")}`;
-  const search = request.nextUrl.search;
-  const headers = pickForwardedHeaders(request.headers);
   const body = BODYLESS_METHODS.has(request.method) ? undefined : await request.text();
 
   let response = await apiRaw(`${path}${search}`, {
