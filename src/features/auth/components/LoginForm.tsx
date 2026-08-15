@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 
 import { useLogin } from "../hooks/useLogin";
 import { loginSchema, type LoginFormValues } from "../lib/auth-schemas";
+import { safeNextPath } from "../lib/safe-next-path";
 import type { Role } from "../types";
 import { AuthFormError } from "./AuthFormError";
 
@@ -20,10 +21,6 @@ const HOME_BY_ROLE: Record<Role, string> = {
   GATE: "/check-in",
 };
 
-function safeNextPath(nextPath?: string): string | undefined {
-  return nextPath?.startsWith("/") && !nextPath.startsWith("//") ? nextPath : undefined;
-}
-
 export function LoginForm({ nextPath }: { nextPath?: string }) {
   const router = useRouter();
   const login = useLogin();
@@ -32,7 +29,12 @@ export function LoginForm({ nextPath }: { nextPath?: string }) {
   function handleSubmit(values: LoginFormValues) {
     setSubmitError(undefined);
     login.mutate(values, {
-      onSuccess: ({ user }) => router.replace(safeNextPath(nextPath) ?? HOME_BY_ROLE[user.role]),
+      onSuccess: ({ user }) =>
+        router.replace(
+          user.role === "CUSTOMER"
+            ? (safeNextPath(nextPath) ?? HOME_BY_ROLE.CUSTOMER)
+            : HOME_BY_ROLE[user.role],
+        ),
       onError: setSubmitError,
     });
   }
@@ -47,7 +49,12 @@ export function LoginForm({ nextPath }: { nextPath?: string }) {
       </Button>
       <p className="text-center text-sm text-muted-foreground">
         Ainda não tem conta?{" "}
-        <Link href="/register" className="font-medium text-primary hover:underline">
+        <Link
+          href={
+            safeNextPath(nextPath) ? `/register?next=${encodeURIComponent(nextPath!)}` : "/register"
+          }
+          className="font-medium text-primary hover:underline"
+        >
           Cadastre-se
         </Link>
       </p>

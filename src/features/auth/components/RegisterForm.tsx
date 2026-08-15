@@ -11,9 +11,10 @@ import { Button } from "@/components/ui/button";
 
 import { useRegister } from "../hooks/useRegister";
 import { registerSchema, type RegisterFormValues } from "../lib/auth-schemas";
+import { safeNextPath } from "../lib/safe-next-path";
 import { AuthFormError } from "./AuthFormError";
 
-export function RegisterForm() {
+export function RegisterForm({ nextPath }: { nextPath?: string }) {
   const router = useRouter();
   const register = useRegister();
   const [submitError, setSubmitError] = useState<unknown>();
@@ -22,7 +23,7 @@ export function RegisterForm() {
     const input = { name: values.name, email: values.email, password: values.password };
     setSubmitError(undefined);
     register.mutate(input, {
-      onSuccess: () => router.replace("/events"),
+      onSuccess: () => router.replace(safeNextPath(nextPath) ?? "/events"),
       onError: setSubmitError,
     });
   }
@@ -47,7 +48,10 @@ export function RegisterForm() {
       </Button>
       <p className="text-center text-sm text-muted-foreground">
         Já tem uma conta?{" "}
-        <Link href="/login" className="font-medium text-primary hover:underline">
+        <Link
+          href={safeNextPath(nextPath) ? `/login?next=${encodeURIComponent(nextPath!)}` : "/login"}
+          className="font-medium text-primary hover:underline"
+        >
           Entrar
         </Link>
       </p>
