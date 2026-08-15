@@ -23,7 +23,7 @@ Progresso do projeto, agrupado por epic. Derivado de
 | [06 — Portaria](#06--portaria) | `feat/06-portaria` | — | ✅ 6/6 |
 | [07 — Dashboard organizador](#07--dashboard-organizador) | `feat/07-dashboard` | — | ✅ 6/6 |
 | [08 — Entrega](#08--entrega) | `docs/08-entrega` | — | ✅ 4/4 |
-| [09 — Experiência pública e layout](#09--experiência-pública-e-layout) | `feat/09-experiencia-publica-layout` | [plano](plans/2026-08-14-09-experiencia-publica-layout.md) | 🟨 5/10 |
+| [09 — Experiência pública e layout](#09--experiência-pública-e-layout) | `feat/09-experiencia-publica-layout` | [plano](plans/2026-08-14-09-experiencia-publica-layout.md) | 🟨 9/10 |
 
 **Nota sobre a ordem.** O epic `02` (UI kit) entra **antes de qualquer tela de
 produto**. Por isso as telas de login e cadastro estão em `02`, não em `01`:
@@ -192,10 +192,10 @@ Spec: [`specs/009-experiencia-publica-layout.md`](specs/009-experiencia-publica-
 - [x] **09.3** Corrigir cards e detalhe para pôster `2:3` sem recorte
 - [x] **09.4** Conectar detalhe, autenticação e checkout em uma jornada de compra contínua
 - [x] **09.5** Separar navegação de cliente, organizador e portaria; remover placeholders bloqueados
-- [ ] **09.6** Base visual: tokens `--cinema`, raio e Inter vendorizada via `next/font/local`
-- [ ] **09.7** Corrigir `FormPassword`: colisão de `translate-y` que desloca o botão e engole o clique
-- [ ] **09.8** Vitrine: `CinemaHero`, carrossel `EventRow` e card com fundo derivado
-- [ ] **09.9** Painel: `PageHeader`, sidebar com trilho ativo e `DataTable` em card
+- [x] **09.6** Base visual: tokens `--cinema`, raio e Inter vendorizada via `next/font/local`
+- [x] **09.7** Corrigir `FormPassword`: colisão de `translate-y` que desloca o botão e engole o clique
+- [x] **09.8** Vitrine: `CinemaHero`, carrossel `EventRow` e card com fundo derivado
+- [x] **09.9** Painel: `PageHeader`, sidebar com trilho ativo e `DataTable` em card
 - [ ] **09.10** Revisar responsividade, acessibilidade, temas, testes e documentação visual
 
 **Pronto quando:** visitante navega até um evento, autentica ao comprar, conclui o ingresso e nenhum papel vê ferramentas que não lhe pertencem; a vitrine lê como plataforma de streaming e o painel segue denso, sobre o mesmo sistema de design.
