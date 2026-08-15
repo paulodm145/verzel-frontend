@@ -22,7 +22,7 @@ export function EventFilters({ value, onChange }: EventFiltersProps) {
       <Label htmlFor="event-search" className="sr-only">
         Buscar eventos
       </Label>
-      <div className="relative max-w-sm">
+      <div className="relative max-w-md">
         <Search
           className="pointer-events-none absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground"
           aria-hidden="true"
@@ -33,7 +33,7 @@ export function EventFilters({ value, onChange }: EventFiltersProps) {
           placeholder="Buscar eventos..."
           value={value}
           onChange={(event) => onChange(event.target.value)}
-          className="pl-8"
+          className="h-10 border-transparent bg-muted/70 pl-9 shadow-none focus-visible:bg-card"
         />
       </div>
     </div>

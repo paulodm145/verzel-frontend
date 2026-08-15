@@ -2,6 +2,7 @@
 
 import { AsyncBoundary } from "@/components/feedback/AsyncBoundary";
 import { ErrorState } from "@/components/feedback/ErrorState";
+import { PageHeader } from "@/components/layout/PageHeader";
 import { useConfirm } from "@/components/modal/useConfirm";
 import { Button } from "@/components/ui/button";
 
@@ -49,28 +50,29 @@ export function EventDetailScreen({ id }: { id: string }) {
     >
       {eventQuery.data && (
         <div className="flex flex-col gap-4">
-          <header className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <h1 className="text-lg font-semibold">{eventQuery.data.title}</h1>
-              <EventStatusBadge status={eventQuery.data.status} />
-            </div>
-            <div className="flex gap-2">
-              {eventQuery.data.status === "DRAFT" && (
-                <Button onClick={() => void handlePublish()} disabled={publishEvent.isPending}>
-                  Publicar
-                </Button>
-              )}
-              {eventQuery.data.status !== "CANCELED" && (
-                <Button
-                  variant="destructive"
-                  onClick={() => void handleCancel()}
-                  disabled={cancelEvent.isPending}
-                >
-                  Cancelar evento
-                </Button>
-              )}
-            </div>
-          </header>
+          <PageHeader
+            eyebrow="Gestão · Evento"
+            title={eventQuery.data.title}
+            titleBadge={<EventStatusBadge status={eventQuery.data.status} />}
+            actions={
+              <>
+                {eventQuery.data.status === "DRAFT" && (
+                  <Button onClick={() => void handlePublish()} disabled={publishEvent.isPending}>
+                    Publicar
+                  </Button>
+                )}
+                {eventQuery.data.status !== "CANCELED" && (
+                  <Button
+                    variant="destructive"
+                    onClick={() => void handleCancel()}
+                    disabled={cancelEvent.isPending}
+                  >
+                    Cancelar evento
+                  </Button>
+                )}
+              </>
+            }
+          />
 
           {(publishEvent.error ?? cancelEvent.error) != null && (
             <ErrorState error={publishEvent.error ?? cancelEvent.error} />
