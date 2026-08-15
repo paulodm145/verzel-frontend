@@ -25,7 +25,7 @@ export default async function ForbiddenPage() {
           Sua sessão continua válida, mas este espaço é restrito a outro papel de usuário. Volte
           para o início ou entre com uma conta que tenha acesso.
         </p>
-        <Button variant="outline" render={<Link href="/" />}>
+        <Button nativeButton={false} variant="outline" render={<Link href="/" />}>
           Voltar ao início
         </Button>
       </div>
