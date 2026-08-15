@@ -36,16 +36,26 @@ export function FormPassword({ name, label, description, autoComplete }: FormPas
           type={visible ? "text" : "password"}
           autoComplete={autoComplete}
           aria-invalid={fieldState.invalid || undefined}
-          className="pr-8"
+          // Reserva a largura do botão (size-7) mais folga real dos dois lados.
+          className="pr-10"
           {...field}
         />
+        {/*
+          Centralização por `inset-y-0 my-auto`, NÃO por `-translate-y-1/2`:
+          `buttonVariants` já aplica `active:translate-y-px` e, no Tailwind v4,
+          os dois escreveriam a mesma `--tw-translate-y`. No `:active` a
+          centralização era descartada, o botão saltava meia altura para baixo
+          e escapava de sob o cursor entre `mousedown` e `mouseup` — o `click`
+          nem chegava a disparar, e a senha ora aparecia, ora não.
+        */}
         <Button
           type="button"
           variant="ghost"
           size="icon-sm"
-          className="absolute top-1/2 right-1 -translate-y-1/2"
+          className="absolute inset-y-0 right-1 my-auto"
           onClick={() => setVisible((current) => !current)}
           aria-label={visible ? "Ocultar senha" : "Mostrar senha"}
+          aria-pressed={visible}
         >
           {visible ? <EyeOffIcon /> : <EyeIcon />}
         </Button>
