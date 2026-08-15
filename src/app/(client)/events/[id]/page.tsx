@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import { parseTheme, THEME_COOKIE } from "@/lib/theme";
 
-import { AppShell } from "@/components/layout/AppShell";
+import { PublicShell } from "@/components/layout/PublicShell";
 import { EventDetailContent } from "@/features/events/components/EventDetailContent";
 
 interface EventDetailPageProps {
@@ -16,8 +16,8 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   ]);
 
   return (
-    <AppShell title="Detalhe do evento" theme={theme}>
+    <PublicShell theme={theme}>
       <EventDetailContent eventId={id} />
-    </AppShell>
+    </PublicShell>
   );
 }

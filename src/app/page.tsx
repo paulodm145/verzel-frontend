@@ -1,15 +1,16 @@
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
-import { parseSessionUser, type Role } from "@/server/session";
+import { parseTheme, THEME_COOKIE } from "@/lib/theme";
 
-const HOME_BY_ROLE: Record<Role, string> = {
-  CUSTOMER: "/events",
-  ORGANIZER: "/dashboard",
-  GATE: "/check-in",
-};
+import { PublicShell } from "@/components/layout/PublicShell";
+import { PublicHome } from "@/features/events/components/PublicHome";
 
 export default async function HomePage() {
-  const user = parseSessionUser((await cookies()).get("vz_user")?.value);
-  redirect(user ? HOME_BY_ROLE[user.role] : "/login");
+  const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
+
+  return (
+    <PublicShell theme={theme}>
+      <PublicHome />
+    </PublicShell>
+  );
 }
