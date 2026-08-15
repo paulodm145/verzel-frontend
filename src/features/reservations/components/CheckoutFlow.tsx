@@ -13,6 +13,7 @@ import { formatMoney } from "../lib/format-money";
 import { seatMapQueryKey, useSeatMapAdapter, type Seat } from "../lib/seat-map-adapter";
 import type { Reservation } from "../types";
 import { ActiveReservationPanel } from "./ActiveReservationPanel";
+import { CheckoutSteps } from "./CheckoutSteps";
 import { SeatSelectionPanel } from "./SeatSelectionPanel";
 import { TicketIssuedPanel } from "./TicketIssuedPanel";
 
@@ -36,6 +37,7 @@ export function CheckoutFlow({ eventId }: CheckoutFlowProps) {
   const [selectedSeat, setSelectedSeat] = useState<Seat | null>(null);
   const [reservation, setReservation] = useState<Reservation | null>(null);
   const [issuedSeatLabel, setIssuedSeatLabel] = useState<string | null>(null);
+  const currentStep = issuedSeatLabel ? 3 : reservation ? 2 : selectedSeat ? 1 : 0;
 
   function handleReserve() {
     if (!selectedSeat) return;
@@ -65,7 +67,10 @@ export function CheckoutFlow({ eventId }: CheckoutFlowProps) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+      <div className="rounded-xl border border-border/70 bg-card p-4">
+        <CheckoutSteps current={currentStep} />
+      </div>
       <AsyncBoundary
         isLoading={eventQuery.isLoading || seatsQuery.isLoading}
         error={eventQuery.error ?? seatsQuery.error}
