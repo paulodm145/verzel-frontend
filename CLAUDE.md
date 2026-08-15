@@ -179,11 +179,20 @@ Se veio da API, é do Query — não se copia para Zustand. Duplicar dado de ser
 
 ## Design — evitar AI slop
 
-Referência visual: **estética AdminLTE** (densidade de informação, sidebar fixa, cards com header/body demarcados, tabelas com bordas sutis, paleta sóbria de admin clássico), implementada com Tailwind + shadcn/ui — o *espírito*, não o CSS do AdminLTE clonado. Um painel que parece feito para uso operacional real, não um dashboard genérico de SaaS.
+**Dois registros, um sistema** (spec `009` §7.0). A vitrine precisa dar vontade de entrar; o painel precisa deixar operar rápido. Aplicar a mesma linguagem aos dois piora um deles.
 
-- **Nada de gradiente roxo-azul genérico, nada de emoji como ícone, nada de sombra flutuante exagerada.** Paleta sóbria, uma cor de ação primária.
-- **Densidade de dashboard, não espaçamento de landing page.** Linhas compactas, ações inline, filtros no topo.
+- **Áreas autenticadas** (organizador, cliente, portaria) — **estética AdminLTE**: densidade de informação, sidebar fixa, cards com header/body demarcados, tabelas com bordas sutis, paleta sóbria de admin clássico. O *espírito*, não o CSS do AdminLTE clonado. Um painel para uso operacional real, não um dashboard genérico de SaaS.
+- **Área pública** (`/`, `/events`, `/events/[id]`) — linguagem de **plataforma de streaming**: superfície `--cinema` profunda nos dois temas, pôster como protagonista, carrossel horizontal, respiro maior.
+
+Tokens, tipografia, raio, escala de espaçamento e componentes de formulário são **os mesmos** nos dois. Se você está criando um token de cor só para a vitrine, parou no lugar errado.
+
+Valendo em toda a aplicação:
+
+- **Nada de gradiente roxo-azul genérico, nada de emoji como ícone, nada de sombra flutuante exagerada.** Paleta sóbria, uma cor de ação primária. (Gradiente como *scrim* de legibilidade sobre imagem não é ornamento — é contraste.)
+- **Densidade de dashboard, não espaçamento de landing page** — nas áreas autenticadas.
 - **Tipografia com hierarquia real**, não tudo do mesmo peso com só a cor mudando.
+- **Nada rotaciona sozinho.** Carrossel só se move por ação do usuário, sem biblioteca, respeitando `prefers-reduced-motion`.
+- **Não inventar categoria que a API não expressa.** Sem "Populares"/"Recomendados" sobre um endpoint que só tem busca e paginação; sem card de métrica cujo número não vem da API.
 - Os 4 estados da portaria (`VALID`/`ALREADY_USED`/`WRONG_EVENT`/`INVALID`) merecem tela cheia de cor + ícone grande + vibração opcional — é o momento de maior tensão do fluxo (fila esperando). **Cada estado tem ícone próprio**: cor sozinha falha para daltônicos.
 - Registrar em `docs/DECISIONS.md` *por que* cada escolha não-óbvia foi feita.
 
