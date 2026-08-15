@@ -8,7 +8,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { parseSessionUser, type Role } from "@/server/session";
 
 const ROLE_BY_PREFIX: ReadonlyArray<{ prefix: string; role: Role }> = [
-  { prefix: "/events", role: "CUSTOMER" },
+  { prefix: "/events/", role: "CUSTOMER" },
   { prefix: "/my-tickets", role: "CUSTOMER" },
   { prefix: "/dashboard", role: "ORGANIZER" },
   { prefix: "/check-in", role: "GATE" },
@@ -16,7 +16,11 @@ const ROLE_BY_PREFIX: ReadonlyArray<{ prefix: string; role: Role }> = [
 
 export function proxy(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
-  const rule = ROLE_BY_PREFIX.find(({ prefix }) => pathname.startsWith(prefix));
+  const rule = ROLE_BY_PREFIX.find(({ prefix }) =>
+    prefix === "/events/"
+      ? /^\/events\/[^/]+\/checkout(?:\/|$)/.test(pathname)
+      : pathname.startsWith(prefix),
+  );
   if (!rule) return NextResponse.next();
 
   const user = parseSessionUser(request.cookies.get("vz_user")?.value);
@@ -35,5 +39,10 @@ export function proxy(request: NextRequest): NextResponse {
 }
 
 export const config = {
-  matcher: ["/events/:path*", "/my-tickets/:path*", "/dashboard/:path*", "/check-in/:path*"],
+  matcher: [
+    "/events/:id/checkout/:path*",
+    "/my-tickets/:path*",
+    "/dashboard/:path*",
+    "/check-in/:path*",
+  ],
 };
