@@ -22,7 +22,9 @@ export function TicketIssuedPanel({ seatLabel }: TicketIssuedPanelProps) {
           O QR code já está disponível em Meus Ingressos.
         </p>
       </div>
-      <Button render={<Link href="/my-tickets" />}>Ver meus ingressos</Button>
+      <Button nativeButton={false} render={<Link href="/my-tickets" />}>
+        Ver meus ingressos
+      </Button>
     </div>
   );
 }
