@@ -48,3 +48,6 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# ferramentas de agente: permissões locais e worktrees
+.claude/
