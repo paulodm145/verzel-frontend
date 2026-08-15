@@ -28,7 +28,7 @@ function renderSimulator(onApproved = vi.fn()) {
   render(<PaymentSimulator reservationId={RESERVATION_ID} onApproved={onApproved} />, {
     wrapper: Wrapper,
   });
-  return { onApproved };
+  return { client, onApproved };
 }
 
 describe("PaymentSimulator", () => {
@@ -44,6 +44,21 @@ describe("PaymentSimulator", () => {
 
     expect(await screen.findByRole("status")).toHaveTextContent("Pagamento aprovado");
     expect(onApproved).toHaveBeenCalledTimes(1);
+  });
+
+  it("invalida Meus ingressos quando o pagamento é aprovado", async () => {
+    server.use(
+      http.post(`http://localhost:3000/api/v/reservations/${RESERVATION_ID}/payment`, () =>
+        HttpResponse.json(paymentBody("APPROVED")),
+      ),
+    );
+    const { client, onApproved } = renderSimulator();
+    const invalidateSpy = vi.spyOn(client, "invalidateQueries");
+
+    fireEvent.click(screen.getByRole("button", { name: "Aprovar pagamento" }));
+
+    await waitFor(() => expect(onApproved).toHaveBeenCalledTimes(1));
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: ["tickets", "mine"] });
   });
 
   it("suprime o aviso quando Idempotency-Replayed: true — o resultado ainda se aplica", async () => {
