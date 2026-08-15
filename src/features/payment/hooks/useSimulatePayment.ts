@@ -5,6 +5,7 @@ import { useCallback, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { RESERVATIONS_QUERY_KEY } from "@/features/reservations/hooks/useMyReservations";
+import { MY_TICKETS_QUERY_KEY } from "@/features/tickets/hooks/useMyTickets";
 
 import { paymentService } from "../services/payment-service";
 import type { SimulatePaymentInput } from "../types";
@@ -41,7 +42,10 @@ export function useSimulatePayment() {
       // Só limpa a tentativa quando o pagamento é de fato aprovado — uma
       // recusa mantém a reserva PENDING e o usuário pode tentar de novo
       // (inclusive repetir a mesma escolha, que deve reusar a chave).
-      if (result.payment.status === "APPROVED") attemptRef.current = null;
+      if (result.payment.status === "APPROVED") {
+        attemptRef.current = null;
+        void queryClient.invalidateQueries({ queryKey: MY_TICKETS_QUERY_KEY });
+      }
       void queryClient.invalidateQueries({ queryKey: RESERVATIONS_QUERY_KEY });
     },
   });
