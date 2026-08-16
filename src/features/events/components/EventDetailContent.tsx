@@ -57,7 +57,10 @@ export function EventDetailContent({ eventId }: EventDetailContentProps) {
     <div className="flex flex-col gap-6">
       <Link
         href="/events"
-        className="flex w-fit items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+        // py-1 leva o alvo aos 24 px de altura da WCAG 2.2 (2.5.8) sem mexer
+        // no tamanho do texto: link solto não tem a isenção que vale para
+        // link no meio de uma frase.
+        className="flex w-fit items-center gap-1.5 py-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
         Voltar para eventos

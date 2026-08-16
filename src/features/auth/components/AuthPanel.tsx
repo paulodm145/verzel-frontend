@@ -16,7 +16,11 @@ export function AuthPanel({
     <main className="grid min-h-screen place-items-center bg-muted/40 px-4 py-8">
       <section className="w-full max-w-md overflow-hidden rounded-lg border bg-card text-card-foreground">
         <header className="border-b bg-primary px-6 py-5 text-primary-foreground">
-          <Link href="/" className="mb-4 inline-flex items-center gap-2 text-sm font-semibold">
+          {/* py-0.5: mesmos 24 px de alvo mínimo do link de voltar (WCAG 2.5.8). */}
+          <Link
+            href="/"
+            className="mb-4 inline-flex items-center gap-2 py-0.5 text-sm font-semibold"
+          >
             <TicketIcon className="size-5" aria-hidden="true" />
             Verzel Eventos
           </Link>
