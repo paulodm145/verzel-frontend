@@ -66,6 +66,32 @@ A regra é ausência de dependência externa, não ausência de fonte própria. 
 
 Os arquivos da Inter passam a ser versionados no repositório e carregados por `next/font/local`. Não há chamada ao Google Fonts em build nem em runtime, o clone continua reprodutível offline, e o resultado deixa de depender do que está instalado na máquina do avaliador. `next/font/google` foi descartado justamente por baixar a fonte durante o build.
 
+## Contraste conferido por teste, não por comentário
+
+Os tokens traziam a razão de contraste anotada ao lado da cor. Número escrito à mão envelhece calado: quem ajusta uma cor não reabre a calculadora, e a promessa de AA vira folclore. `theme-contrast.test.ts` lê o `globals.css` de verdade, converte `oklch` para sRGB e recalcula 20 pares por tema; a paleta fixa dos 4 estados da portaria é lida do próprio componente.
+
+Todos os pares passam AA nos dois temas — o mais apertado é `muted-foreground` sobre `muted` no escuro, com 4,51:1. Os estados da portaria ficam entre 5,01:1 e 6,70:1. O teste falha com a razão medida na mensagem, então quem baixar um contraste descobre na hora, e não em auditoria.
+
+## Movimento reduzido cobre o que o CSS não alcança
+
+A regra global `scroll-behavior: auto` sob `prefers-reduced-motion` não vale para rolagem pedida por JavaScript com `behavior: "smooth"` explícito — nesse caso o CSSOM manda animar de todo jeito. As setas do carrossel continuavam animando para quem pediu menos movimento. A preferência passou a ser lida por `matchMedia` no próprio componente.
+
+O mesmo ajuste corrigiu um defeito vizinho, encontrado medindo o foco em navegador real: o navegador revela o elemento *focado* — o link — e não o card que o envolve. Com rolagem instantânea ele parava assim que o link cabia e deixava **36 px do último card para fora da trilha**, exatamente para o usuário de teclado que pediu menos movimento. Com rolagem suave o efeito não aparecia, porque a animação terminava no limite da trilha. A trilha agora rola o filho direto no `focus`.
+
+## Alvos de toque e o link que se anuncia botão
+
+Os links soltos "Voltar para eventos" e a marca no painel de autenticação tinham 16 e 20 px de altura. Ganharam padding vertical até os 24 px mínimos da WCAG 2.2 (2.5.8), sem mudar o tamanho do texto. "Entrar" e "Cadastre-se" ficaram como estão: link no meio de uma frase tem isenção explícita no critério, e inflá-los quebraria a linha de texto.
+
+O `Button` renderizado como link (`nativeButton={false}`) expõe `role="button"` no `<a>`, então o leitor de tela anuncia "botão" onde há navegação. É escolha deliberada do Base UI, não descuido: para link ele deixa o Enter com a navegação nativa e adiciona o Espaço no `keyup`, cumprindo o contrato de teclado que o papel promete. Trocar isso significaria abandonar o `Button` nos links e reimplementar as variantes como classe — custo alto, ganho semântico pequeno, e uma inconsistência nova entre botão e link com a mesma aparência. Fica registrado como trade-off aceito.
+
+## Responsividade verificada, não presumida
+
+A largura mínima de 360 px foi conferida em navegador nas duas temperaturas de tema e em três larguras (360, 768, 1280), nas telas públicas e nas de cada papel: nenhuma produz rolagem horizontal na página. Tabela do organizador e mapa de assentos rolam dentro do próprio contêiner, que é o comportamento desejado — o que não pode rolar de lado é o corpo da página.
+
+A verificação foi feita com script de auditoria fora do repositório, dirigindo o servidor de desenvolvimento. Ele não virou dependência do projeto: exigiria navegador baixado no CI para cobrir algo que muda a cada ajuste de layout, e o retorno não paga a manutenção. O que ficou versionado é o que tem resposta objetiva e estável — contraste e comportamento de foco.
+
 ## Testes cirúrgicos
 
-A suíte cobre concorrência, idempotência, temporizadores, scanner, estados de validação, parsing de erros e componentes compartilhados complexos. Não há meta artificial de cobertura nem testes de markup trivial; o objetivo é detectar regressões de comportamento.
+A suíte cobre concorrência, idempotência, temporizadores, scanner, estados de validação, parsing de erros, contraste de tema e componentes compartilhados complexos. Não há meta artificial de cobertura nem testes de markup trivial; o objetivo é detectar regressões de comportamento.
+
+Da revisão final saíram três alvos novos, todos de regra e não de aparência: o destino do CTA de compra com `next` preservado por papel, a navegação que não pode exibir atalho de outro papel, e o comportamento do carrossel sob `prefers-reduced-motion`.

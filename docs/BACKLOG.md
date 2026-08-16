@@ -196,6 +196,6 @@ Spec: [`specs/009-experiencia-publica-layout.md`](specs/009-experiencia-publica-
 - [x] **09.7** Corrigir `FormPassword`: colisão de `translate-y` que desloca o botão e engole o clique
 - [x] **09.8** Vitrine: `CinemaHero`, carrossel `EventRow` e card com fundo derivado
 - [x] **09.9** Painel: `PageHeader`, sidebar com trilho ativo e `DataTable` em card
-- [ ] **09.10** Revisar responsividade, acessibilidade, temas, testes e documentação visual
+- [x] **09.10** Revisar responsividade, acessibilidade, temas, testes e documentação visual
 
 **Pronto quando:** visitante navega até um evento, autentica ao comprar, conclui o ingresso e nenhum papel vê ferramentas que não lhe pertencem; a vitrine lê como plataforma de streaming e o painel segue denso, sobre o mesmo sistema de design.
