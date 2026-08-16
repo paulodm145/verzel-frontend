@@ -192,7 +192,12 @@
 
 @layer base {
   /* Rolagem suave é conforto, não informação: quem pediu menos movimento
-     recebe salto instantâneo. Vale para o `scrollBy` das setas também. */
+     recebe salto instantâneo.
+
+     Cobre só o que o CSS controla. Rolagem pedida por JS com
+     `behavior: "smooth"` explícito ignora esta regra — por isso o
+     `CarouselTrack` lê a preferência por `matchMedia` e escolhe o
+     comportamento na mão. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
