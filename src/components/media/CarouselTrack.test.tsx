@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { CarouselTrack } from "./CarouselTrack";
 
@@ -31,7 +31,19 @@ function renderTrack() {
   );
 }
 
+/** jsdom não tem `matchMedia`; cada teste declara a preferência que simula. */
+function mockReducedMotion(reduce: boolean) {
+  vi.stubGlobal("matchMedia", (query: string) => ({
+    matches: reduce && query.includes("prefers-reduced-motion"),
+    media: query,
+    addEventListener() {},
+    removeEventListener() {},
+  }));
+}
+
 describe("CarouselTrack", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
   it("expõe a trilha como grupo nomeado e mantém os filhos no fluxo", () => {
     renderTrack();
 
@@ -86,5 +98,49 @@ describe("CarouselTrack", () => {
 
     expect(screen.getByRole("button", { name: "Voltar em Em cartaz" })).toBeEnabled();
     expect(screen.getByRole("button", { name: "Avançar em Em cartaz" })).toBeEnabled();
+  });
+
+  /**
+   * `scroll-behavior: auto` no CSS não alcança rolagem pedida por JS com
+   * `behavior: "smooth"` explícito — o CSSOM anima assim mesmo. Sem esta
+   * leitura de `matchMedia`, quem pede menos movimento continua recebendo a
+   * animação das setas.
+   */
+  it("com prefers-reduced-motion, a seta salta em vez de animar", () => {
+    mockReducedMotion(true);
+    renderTrack();
+    const track = mockTrackMetrics(1000, 300, 0);
+
+    fireEvent.click(screen.getByRole("button", { name: "Avançar em Em cartaz" }));
+
+    expect(track.scrollBy).toHaveBeenCalledWith({ left: 300 * 0.9, behavior: "auto" });
+  });
+
+  /**
+   * O navegador revela o elemento focado — o link — e para assim que ele
+   * cabe, deixando a borda do card para fora quando a rolagem é instantânea.
+   * Quem tem que ficar visível é o filho direto da trilha.
+   */
+  it("ao focar por teclado, revela o card inteiro e não só o link", () => {
+    mockReducedMotion(false);
+    render(
+      <CarouselTrack label="Em cartaz">
+        <div data-testid="card">
+          <a href="#detalhes">Ver detalhes</a>
+        </div>
+      </CarouselTrack>,
+    );
+
+    const card = screen.getByTestId("card");
+    card.scrollIntoView = vi.fn();
+
+    // `.focus()` de verdade: React ouve `focusin`, que só o foco real dispara.
+    screen.getByRole("link", { name: "Ver detalhes" }).focus();
+
+    expect(card.scrollIntoView).toHaveBeenCalledWith({
+      block: "nearest",
+      inline: "nearest",
+      behavior: "smooth",
+    });
   });
 });

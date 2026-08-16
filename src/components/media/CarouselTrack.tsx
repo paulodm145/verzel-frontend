@@ -1,12 +1,21 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type FocusEvent, type ReactNode } from "react";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
+
+/**
+ * `scroll-behavior: auto` do CSS **não** vale para rolagem pedida por JS com
+ * `behavior: "smooth"` explícito — nesse caso o CSSOM manda animar de todo
+ * jeito. Quem pediu menos movimento precisa da preferência lida aqui.
+ */
+function scrollBehavior(): ScrollBehavior {
+  return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+}
 
 interface CarouselTrackProps {
   /** Nome acessível da região — cada trilha da página precisa do seu. */
@@ -63,7 +72,22 @@ export function CarouselTrack({ label, children, className }: CarouselTrackProps
     if (!track) return;
     // Uma "página" é 90% da área visível: a sobra deixa um card parcialmente
     // visível como pista de que a trilha continua.
-    track.scrollBy({ left: direction * track.clientWidth * 0.9, behavior: "smooth" });
+    track.scrollBy({ left: direction * track.clientWidth * 0.9, behavior: scrollBehavior() });
+  }
+
+  /**
+   * O navegador rola o elemento *focado* para dentro da trilha — e o focável
+   * é o link, não o card que o envolve. Com rolagem instantânea (que é o que
+   * `prefers-reduced-motion` produz) ele para assim que o link cabe, deixando
+   * a borda do card para fora: medido em 36 px no último card da fileira.
+   * Rolar o filho direto da trilha cobre o card inteiro.
+   */
+  function revealFocusedItem(event: FocusEvent<HTMLDivElement>) {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const item = Array.from(track.children).find((child) => child.contains(event.target));
+    item?.scrollIntoView({ block: "nearest", inline: "nearest", behavior: scrollBehavior() });
   }
 
   return (
@@ -73,6 +97,7 @@ export function CarouselTrack({ label, children, className }: CarouselTrackProps
         role="group"
         aria-label={label}
         onScroll={syncOverflow}
+        onFocus={revealFocusedItem}
         className={cn(
           "scrollbar-none flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth",
           // scroll-p garante que o snap não encoste o card na borda do
