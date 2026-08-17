@@ -24,11 +24,20 @@ function createNativeDecoder(): BarcodeDecoder {
   };
 }
 
+/** Caminho servido por `public/`, preenchido por `scripts/copy-zxing-wasm.mjs`. */
+const LOCAL_WASM_PATH = "/zxing_reader.wasm";
+
 async function createWasmDecoder(): Promise<BarcodeDecoder> {
   // Import dinâmico: o pacote (e o `.wasm` que ele busca em runtime) só
   // baixa para quem realmente precisa do fallback — a maioria dos leitores
   // de portaria em Chrome/Edge/Android nunca paga esse custo.
-  const { readBarcodes } = await import("zxing-wasm/reader");
+  const { readBarcodes, prepareZXingModule } = await import("zxing-wasm/reader");
+
+  // Por padrão o zxing-wasm busca o binário na CDN da jsDelivr. Servir do
+  // próprio domínio é o que faz a portaria funcionar sem internet pública —
+  // mesma razão de a Inter ser vendorizada em vez de vir do Google Fonts.
+  prepareZXingModule({ overrides: { locateFile: () => LOCAL_WASM_PATH } });
+
   return {
     async detect(imageData) {
       const results = await readBarcodes(imageData, {
