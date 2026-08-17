@@ -51,3 +51,6 @@ next-env.d.ts
 
 # ferramentas de agente: permissões locais e worktrees
 .claude/
+
+# gerado por scripts/copy-zxing-wasm.mjs — vem do node_modules, não do git
+public/zxing_reader.wasm
