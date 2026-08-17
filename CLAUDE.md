@@ -221,6 +221,10 @@ Não se testa markup trivial ("EventCard renderiza o título"): é ruído que qu
 
 **Mapa de assentos, um assento por reserva.** `POST /events/:id/reservations` aceita apenas `{ seatId }` — não existe reserva por quantidade ("pista") nesta API, e prometer isso no README seria furo de entrega.
 
+## Compartilhar ingresso
+
+**Não use o `shareUrl` da resposta**, e não siga o exemplo do `05-ingressos-e-portaria.md` que o passa para `navigator.share`. Ele aponta para o host da API, que responde JSON — a API não conhece o endereço deste frontend. O link é montado por `features/tickets/lib/share-url.ts` sobre a página pública `/ticket/[code]`. Mesma categoria da recomendação de `localStorage` em `02-autenticacao.md`: limitação da API, não do frontend.
+
 ## Dados de teste (seed do backend)
 
 | Papel | E-mail | Senha |
