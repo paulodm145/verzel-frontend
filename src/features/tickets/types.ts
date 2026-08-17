@@ -19,6 +19,11 @@ export interface Ticket {
   seatLabel: string;
   usedAt: string | null;
   event: TicketEventSummary;
+  /**
+   * Vem na resposta, mas **não é usado**: aponta para o host da API, que
+   * responde JSON. O link de compartilhamento é montado por
+   * `lib/share-url.ts` sobre a página pública deste app.
+   */
   shareUrl: string;
 }
 
