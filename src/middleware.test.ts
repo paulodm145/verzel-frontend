@@ -44,7 +44,9 @@ describe("proxy de rotas", () => {
     const request = buildRequest("/dashboard", user);
 
     const response = proxy(request);
-    expect(response.headers.get("location")).toBe("http://localhost:3001/403");
+    // Leva o destino pretendido para que o 403 possa oferecer "entrar com
+    // outra conta" e devolver a pessoa aonde ela ia.
+    expect(response.headers.get("location")).toBe("http://localhost:3001/403?next=%2Fdashboard");
   });
 
   it("sessão válida com o papel certo segue em frente", () => {

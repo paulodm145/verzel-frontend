@@ -7,14 +7,17 @@ import { parseTheme, THEME_COOKIE } from "@/lib/theme";
 
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/ui/button";
+import { SwitchAccountButton } from "@/features/auth/components/SwitchAccountButton";
 
 /**
  * Papel insuficiente — não é redirecionamento de login (`middleware.ts` só
  * chega aqui quando a sessão É válida, mas o papel não dá acesso à rota).
  * Por isso o texto fala em permissão, nunca em "faça login novamente".
  */
-export default async function ForbiddenPage() {
+export default async function ForbiddenPage({ searchParams }: PageProps<"/403">) {
   const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
+  const { next } = await searchParams;
+  const nextPath = typeof next === "string" ? next : undefined;
 
   return (
     <AppShell title="Acesso negado" theme={theme}>
@@ -25,9 +28,12 @@ export default async function ForbiddenPage() {
           Sua sessão continua válida, mas este espaço é restrito a outro papel de usuário. Volte
           para o início ou entre com uma conta que tenha acesso.
         </p>
-        <Button nativeButton={false} variant="outline" render={<Link href="/" />}>
-          Voltar ao início
-        </Button>
+        <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+          <SwitchAccountButton nextPath={nextPath} />
+          <Button nativeButton={false} variant="outline" render={<Link href="/" />}>
+            Voltar ao início
+          </Button>
+        </div>
       </div>
     </AppShell>
   );

@@ -32,7 +32,11 @@ export function proxy(request: NextRequest): NextResponse {
   }
 
   if (user.role !== rule.role) {
-    return NextResponse.redirect(new URL("/403", request.url));
+    // Leva o destino pretendido: sem ele, o 403 só sabe dizer "use outra
+    // conta" e deixa a pessoa adivinhar como voltar para onde ia.
+    const url = new URL("/403", request.url);
+    url.searchParams.set("next", pathname + request.nextUrl.search);
+    return NextResponse.redirect(url);
   }
 
   return NextResponse.next();
