@@ -77,6 +77,20 @@ npm run build
 
 Os testes priorizam lógica cujo defeito tem custo real: refresh single-flight, idempotência, expiração de reserva, conflitos de assento, estados da portaria, trava do scanner, formulários e tabela server-side. Markup trivial não é testado isoladamente.
 
+## Uso de IA
+
+Este projeto foi construído com IA, de propósito e por escrito. O registro completo — incluindo o que **não** é possível atribuir — está em [docs/USO-DE-IA.md](docs/USO-DE-IA.md).
+
+**Ferramentas:** Claude Code (fundação, BFF de autenticação, kit de UI, epics funcionais, modernização visual, revisão de acessibilidade e correções encontradas em produção) e OpenAI Codex (auditoria do repositório, recuperação de trabalho não integrado, migração para as convenções do Next 16.3, reconciliação de branches).
+
+**Onde foi usada:** leitura dos contratos em `docs/doc-frontend` e tradução em componentes, hooks e testes; análise de concorrência no refresh de sessão e de idempotência em reserva e pagamento; escrita e revisão de TypeScript/React; execução de lint, typecheck, testes e build; auditoria de contraste, responsividade e navegação por teclado.
+
+**O que ficou sob decisão humana:** o escopo de cada epic, a autorização de cada merge, a validação visual e as reversões de rumo. A mais visível delas: o QR carregava o token assinado da API, tecnicamente correto e praticamente inútil, porque a câmera nativa do celular não abre nada com ele. A IA defendeu o desenho original com um argumento válido sobre densidade de QR; a decisão de reverter foi humana, veio do uso real, e está registrada como reversão em [docs/DECISIONS.md](docs/DECISIONS.md) — com o argumento anterior, o que o derrubou e o que se perde na troca.
+
+**Método que mudou o resultado:** exigir medição em vez de leitura de código. Contraste é calculado a partir do `globals.css` e conferido por teste, não anotado em comentário. Responsividade, ordem de tabulação e a leitura do QR pela câmera foram verificadas dirigindo um navegador real. Foi assim que apareceram defeitos que revisão de código não pegaria: o leitor de QR baixava seu `.wasm` de uma CDN pública em runtime — quebrando a portaria justamente no iPhone, sem internet pública — e falhava em silêncio, deixando a câmera ligada e cega. Testes novos foram conferidos por mutação, quebrando o código de propósito para provar que o teste falha quando deve.
+
+**Limitação declarada:** não há registro verificável para separar, arquivo a arquivo, o que foi escrito com e sem assistência nas fases iniciais. O documento declara isso em vez de inventar a separação.
+
 ## Próximos passos
 
 - testes E2E com Playwright cobrindo compra e check-in reais;
