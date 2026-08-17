@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 import { formatEventDate } from "../lib/format-event-date";
+import { ticketShareUrl } from "../lib/share-url";
 import type { Ticket } from "../types";
 import { QRCodeDisplay } from "./QRCodeDisplay";
 
@@ -27,14 +28,17 @@ export function TicketCard({ ticket }: { ticket: Ticket }) {
   const [shared, setShared] = useState(false);
 
   async function handleShare() {
+    // Montado a partir da origem deste app: o shareUrl da API aponta para ela
+    // mesma e devolve JSON (ver lib/share-url.ts).
+    const url = ticketShareUrl(ticket.code, window.location.origin);
+
     if (navigator.share) {
-      await navigator.share({
-        title: `Ingresso — ${ticket.event.title}`,
-        url: ticket.shareUrl,
-      });
+      // Fechar a folha de compartilhamento nativa rejeita com AbortError —
+      // desistir não é erro, e sem isso vira rejeição não tratada.
+      await navigator.share({ title: `Ingresso — ${ticket.event.title}`, url }).catch(() => {});
       return;
     }
-    await navigator.clipboard.writeText(ticket.shareUrl);
+    await navigator.clipboard.writeText(url);
     setShared(true);
     setTimeout(() => setShared(false), 2000);
   }
