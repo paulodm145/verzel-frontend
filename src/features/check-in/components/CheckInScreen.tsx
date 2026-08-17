@@ -81,7 +81,11 @@ export function CheckInScreen() {
       )}
 
       <div className="relative min-h-64 flex-1 overflow-hidden rounded-lg">
-        <QRScanner active={!locked} onDetect={(qrContent) => runValidation({ qrContent })} />
+        <QRScanner
+          active={!locked}
+          onDetect={(qrContent) => runValidation({ qrContent })}
+          onReaderError={() => setFlowError(messages.checkin.readerUnavailable)}
+        />
         {locked && outcome && <ValidationResult outcome={outcome} onDismiss={unlock} />}
       </div>
 
