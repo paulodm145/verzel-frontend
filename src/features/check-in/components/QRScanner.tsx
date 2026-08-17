@@ -14,6 +14,8 @@ interface QRScannerProps {
    * `useScanLock`, compartilhada com o `ManualCodeInput`). */
   active: boolean;
   onDetect: (value: string) => void;
+  /** Decodificação morreu de vez — a portaria precisa saber, não adivinhar. */
+  onReaderError?: () => void;
 }
 
 /**
@@ -22,9 +24,14 @@ interface QRScannerProps {
  * decodificação (`useBarcodeScan` + `lib/barcode-decoder`) — para não
  * amontoar as duas coisas num arquivo só.
  */
-export function QRScanner({ active, onDetect }: QRScannerProps) {
+export function QRScanner({ active, onDetect, onReaderError }: QRScannerProps) {
   const { videoRef, status } = useCameraStream();
-  useBarcodeScan({ videoRef, active: active && status === "ready", onDetect });
+  useBarcodeScan({
+    videoRef,
+    active: active && status === "ready",
+    onDetect,
+    onError: onReaderError,
+  });
 
   if (status === "denied" || status === "unsupported") {
     return (

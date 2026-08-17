@@ -22,5 +22,7 @@ export const messages = {
   },
   checkin: {
     cameraDenied: "Não foi possível acessar a câmera. Use o código manual abaixo.",
+    readerUnavailable:
+      "A leitura automática do QR parou de funcionar neste dispositivo. Digite o código do ingresso abaixo.",
   },
 } as const;
