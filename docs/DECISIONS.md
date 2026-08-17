@@ -74,11 +74,19 @@ O binário passou a ser servido pelo próprio domínio, copiado do `node_modules
 
 Junto veio o defeito irmão: o loop de decodificação não tratava exceção, então uma falha ao carregar o decodificador rejeitava a promessa e o loop deixava de se reagendar. A câmera continuava exibindo imagem e nunca mais lia nada, sem uma palavra ao operador. Agora a falha interrompe o loop uma única vez e vira mensagem pedindo o código manual, que já está sempre em tela.
 
-## O que o QR carrega
+## O que o QR carrega — e a decisão revertida
 
-O QR do ingresso contém o `qrContent` assinado pela API, não uma URL. É isso que sustenta o requisito de "código que não possa ser forjado": quem copia a imagem não consegue fabricar outra válida. A consequência é que apontar o app de câmera do sistema operacional para o QR mostra uma cadeia opaca e não abre nada — o consumidor daquele payload é a tela da portaria, que é onde o enunciado pede a leitura por câmera.
+O QR carrega a **URL pública do ingresso** (`/ticket/TKT-…`). A portaria extrai o código dessa URL e valida por `code`; o endpoint aceita `qrContent` **ou** `code`.
 
-Foi considerado embutir uma URL no QR para que qualquer câmera abrisse algo legível. Descartado: para preservar a assinatura, a URL teria de carregar o token inteiro, o que engorda o payload, adensa o QR e piora justamente a leitura à distância na porta — penalizando o usuário principal do código em favor de um caso secundário. Quem precisa *ver* o ingresso tem o link de compartilhamento para `/ticket/[code]`.
+Não foi o primeiro desenho. Antes o QR levava o `qrContent` assinado, seguindo o contrato da API, e havia um argumento razoável para isso: a assinatura torna o ingresso não forjável, e embutir o token numa URL adensaria o código, piorando a leitura à distância na porta.
+
+O que derrubou o argumento foi o uso. Toda pessoa que recebe um ingresso aponta a câmera nativa do celular para o QR — é o gesto aprendido em todo cinema e aeroporto. Apontada para um token assinado, ela mostra uma cadeia de caracteres sem sentido e não abre nada. A conclusão de quem testa não é "usei a ferramenta errada", é **"esse sistema não funciona"** — e essa conclusão é justa, porque um sistema que exige saber qual app abrir antes de funcionar está transferindo o próprio projeto para o usuário. O custo de estar tecnicamente correto e praticamente inútil é mais alto que o custo abaixo.
+
+O que se perde: a validação passa a conferir um código aleatório em vez de uma assinatura. É uma troca aceita e menor do que parece — o link de compartilhamento já dá acesso ao ingresso a quem tem o código, por requisito explícito do enunciado, então o código já era o segredo. O que a assinatura protegia era a fabricação de um QR novo sem passar pela API; contra isso resta a aleatoriedade do código, e a porta continua sendo o único lugar que dá entrada, uma vez só.
+
+A URL escolhida é curta (`/ticket/CODE`) justamente para não adensar o QR: o token inteiro dentro dela é que teria custado legibilidade. E o leitor da portaria continua aceitando o token cru, porque ingressos emitidos antes desta mudança seguem em circulação — recusar um deles seria negar entrada a quem tem ingresso legítimo por causa da data da compra.
+
+Da URL até a validação em dois toques: a página pública oferece "Validar na portaria" para sessão de portaria (ou login levando o destino), e `/check-in?code=…` chega com o campo preenchido, faltando confirmar o evento da porta. Preenchido, não enviado — validar sozinho consumiria o ingresso antes de o operador dizer em que porta está.
 
 ## Link de compartilhamento montado no frontend
 
