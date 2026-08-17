@@ -26,11 +26,15 @@ const STATUS_LABEL: Record<Ticket["status"], string> = {
  */
 export function TicketCard({ ticket }: { ticket: Ticket }) {
   const [shared, setShared] = useState(false);
+  // Renderizado no cliente, então `window` existe. O QR precisa da URL
+  // absoluta: quem lê é a câmera de outro aparelho, sem origem para herdar.
+  const shareUrl =
+    typeof window === "undefined" ? "" : ticketShareUrl(ticket.code, window.location.origin);
 
   async function handleShare() {
     // Montado a partir da origem deste app: o shareUrl da API aponta para ela
     // mesma e devolve JSON (ver lib/share-url.ts).
-    const url = ticketShareUrl(ticket.code, window.location.origin);
+    const url = shareUrl;
 
     if (navigator.share) {
       // Fechar a folha de compartilhamento nativa rejeita com AbortError —
@@ -49,7 +53,7 @@ export function TicketCard({ ticket }: { ticket: Ticket }) {
     <article className="flex flex-col gap-4 rounded-lg border border-border bg-card p-4 sm:flex-row sm:items-start">
       {/* 256–320px é faixa medida no doc (05-ingressos-e-portaria.md) — não
           reduzir para caber no card, a câmera na porta é quem paga o preço. */}
-      <QRCodeDisplay value={ticket.qrContent} size={256} />
+      <QRCodeDisplay value={shareUrl} size={256} />
 
       <div className="flex min-w-0 flex-1 flex-col gap-2">
         <div className="flex items-start justify-between gap-2">

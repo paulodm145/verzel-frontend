@@ -8,6 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import { useTicketByCode } from "../hooks/useTicketByCode";
 import { formatEventDate } from "../lib/format-event-date";
+import { ticketShareUrl } from "../lib/share-url";
+import { GateValidationLink } from "./GateValidationLink";
 import { QRCodeDisplay } from "./QRCodeDisplay";
 
 /**
@@ -52,7 +54,7 @@ export function TicketByCodeView({ code }: { code: string }) {
 
   return (
     <div className="flex flex-col items-center gap-4 text-center">
-      <QRCodeDisplay value={data.qrContent} />
+      <QRCodeDisplay value={ticketShareUrl(data.code, window.location.origin)} />
 
       <div>
         <h1 className="text-lg font-semibold tracking-tight">{data.event.title}</h1>
@@ -81,6 +83,8 @@ export function TicketByCodeView({ code }: { code: string }) {
       >
         {isUsed ? "Ingresso já utilizado" : "Ingresso válido"}
       </p>
+
+      {!isUsed && <GateValidationLink code={data.code} />}
     </div>
   );
 }

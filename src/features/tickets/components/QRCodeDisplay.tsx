@@ -3,7 +3,7 @@
 import { QRCodeSVG } from "qrcode.react";
 
 interface QRCodeDisplayProps {
-  /** `qrContent` vindo direto da API — string assinada, nunca recomposta no cliente. */
+  /** URL pública do ingresso (`/ticket/TKT-…`) — ver lib/share-url.ts. */
   value: string;
   size?: number;
 }

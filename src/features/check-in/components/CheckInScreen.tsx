@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
 
 import { Volume2, VolumeX } from "lucide-react";
@@ -14,6 +15,8 @@ import { usePersistedEventId } from "../hooks/usePersistedEventId";
 import { useScanLock } from "../hooks/useScanLock";
 import { useValidateTicket } from "../hooks/useValidateTicket";
 import { playResultFeedback } from "../lib/feedback";
+import { parseScannedValue } from "../lib/scanned-value";
+import type { ScannedTicket } from "../lib/scanned-value";
 import type { GateValidateResponse } from "../types";
 import { EventPicker } from "./EventPicker";
 import { ManualCodeInput } from "./ManualCodeInput";
@@ -28,6 +31,9 @@ import { ValidationResult } from "./ValidationResult";
  * câmera não pode empilhar uma segunda validação.
  */
 export function CheckInScreen() {
+  // A portaria pode chegar pela URL do QR (`/check-in?code=TKT-…`), lida pela
+  // câmera nativa do celular em vez do leitor desta tela.
+  const codeFromQr = useSearchParams().get("code") ?? undefined;
   const [eventId, setEventId] = usePersistedEventId();
   const { data: events } = useGateEvents();
   const [outcome, setOutcome] = useState<GateValidateResponse | null>(null);
@@ -37,7 +43,7 @@ export function CheckInScreen() {
   const { locked, guard, unlock } = useScanLock();
 
   const runValidation = useCallback(
-    (input: { qrContent: string } | { code: string }) => {
+    (input: ScannedTicket) => {
       if (!eventId) {
         setFlowError("Selecione o evento desta porta antes de validar um ingresso.");
         return;
@@ -83,7 +89,12 @@ export function CheckInScreen() {
       <div className="relative min-h-64 flex-1 overflow-hidden rounded-lg">
         <QRScanner
           active={!locked}
-          onDetect={(qrContent) => runValidation({ qrContent })}
+          onDetect={(scanned) => {
+            // O QR carrega a URL pública; o parser extrai o código dela e ainda
+            // aceita o token assinado dos ingressos emitidos antes disso.
+            const input = parseScannedValue(scanned);
+            if (input) runValidation(input);
+          }}
           onReaderError={() => setFlowError(messages.checkin.readerUnavailable)}
         />
         {locked && outcome && <ValidationResult outcome={outcome} onDismiss={unlock} />}
@@ -98,7 +109,11 @@ export function CheckInScreen() {
         </p>
       )}
 
-      <ManualCodeInput disabled={locked} onSubmit={(code) => runValidation({ code })} />
+      <ManualCodeInput
+        disabled={locked}
+        initialCode={codeFromQr}
+        onSubmit={(code) => runValidation({ code })}
+      />
     </div>
   );
 }
