@@ -66,6 +66,14 @@ A regra é ausência de dependência externa, não ausência de fonte própria. 
 
 Os arquivos da Inter passam a ser versionados no repositório e carregados por `next/font/local`. Não há chamada ao Google Fonts em build nem em runtime, o clone continua reprodutível offline, e o resultado deixa de depender do que está instalado na máquina do avaliador. `next/font/google` foi descartado justamente por baixar a fonte durante o build.
 
+## Link de compartilhamento montado no frontend
+
+`GET /tickets/mine` devolve `shareUrl`, e o exemplo do `05-ingressos-e-portaria.md` passa esse campo direto para `navigator.share`. Seguir o exemplo à risca compartilha `https://<api>/tickets/TKT-...`, que responde **JSON**: quem recebe o link vê um objeto, não um ingresso. Foi o que aconteceu em produção.
+
+Não é defeito da API — é o único link que ela consegue montar, porque não conhece o endereço deste frontend. Mesma natureza da recomendação de `localStorage` em `02-autenticacao.md`: o doc descreve o que a API resolve sozinha, não o que este projeto deve fazer. O link passa a ser montado sobre a página pública `/ticket/[code]`, que existe exatamente para isso e já renderiza título, data, local, assento, código, status e QR.
+
+O campo continua no tipo, marcado como deliberadamente não usado. Apagá-lo esconderia a pegadinha do próximo leitor, que iria buscá-lo na resposta e usá-lo de novo.
+
 ## Contraste conferido por teste, não por comentário
 
 Os tokens traziam a razão de contraste anotada ao lado da cor. Número escrito à mão envelhece calado: quem ajusta uma cor não reabre a calculadora, e a promessa de AA vira folclore. `theme-contrast.test.ts` lê o `globals.css` de verdade, converte `oklch` para sRGB e recalcula 20 pares por tema; a paleta fixa dos 4 estados da portaria é lida do próprio componente.

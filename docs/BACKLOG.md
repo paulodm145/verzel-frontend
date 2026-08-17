@@ -199,3 +199,11 @@ Spec: [`specs/009-experiencia-publica-layout.md`](specs/009-experiencia-publica-
 - [x] **09.10** Revisar responsividade, acessibilidade, temas, testes e documentação visual
 
 **Pronto quando:** visitante navega até um evento, autentica ao comprar, conclui o ingresso e nenhum papel vê ferramentas que não lhe pertencem; a vitrine lê como plataforma de streaming e o painel segue denso, sobre o mesmo sistema de design.
+
+---
+
+## 10 — Correções encontradas em produção
+
+Defeitos achados usando a aplicação publicada, fora do escopo de qualquer epic. Cada um entra com o teste que o reproduz.
+
+- [x] **10.1** Compartilhar ingresso levava ao endpoint JSON da API em vez da página pública `/ticket/[code]`
