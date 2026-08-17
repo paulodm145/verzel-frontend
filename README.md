@@ -43,6 +43,16 @@ SESSION_COOKIE_SECURE=false
 | Cliente     | `cliente1@verzel.test`    | `cliente123`     |
 | Portaria    | `portaria@verzel.test`    | `portaria123`    |
 
+## Validando um ingresso na portaria
+
+Entre com `portaria@verzel.test`. O login já cai em `/check-in` — é a tela exclusiva desse papel, sem sidebar, para sobrar espaço ao leitor.
+
+1. Escolha **o evento desta porta**. Sem isso nada é validado: é o que permite distinguir "ingresso de outro evento" de "ingresso inválido".
+2. Aponte a câmera para o QR do ingresso, ou digite o código em `TKT-XXXX-XXXX-XXXX`. A digitação está sempre visível, porque câmera é negada, falha e demora.
+3. O resultado ocupa a tela inteira por 2 segundos, com cor **e** ícone próprios: liberado, já utilizado, de outro evento ou inválido. Os 2 segundos também são a trava que evita ler o mesmo QR duas vezes e mostrar "já utilizado" logo depois de "liberado".
+
+**A câmera nativa do celular não serve para validar, e isso é de propósito.** O QR não carrega uma URL: carrega o `qrContent` assinado pela API, que é o que impede um ingresso de ser forjado. Apontar o app de câmera do sistema para ele mostra uma cadeia de caracteres sem sentido aparente — quem sabe o que fazer com ela é a tela da portaria. Para uma pessoa _ver_ o ingresso existe outro caminho: o link de compartilhamento, que aponta para `/ticket/[code]`.
+
 ## Arquitetura
 
 O navegador fala somente com o Next. Login e refresh ficam no BFF e os tokens permanecem em cookies `httpOnly`; chamadas de domínio passam pelo proxy `/api/v/*`. Dados remotos pertencem ao TanStack Query, enquanto Zustand guarda apenas estado efêmero de fluxo e preferências de UI.

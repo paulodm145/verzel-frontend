@@ -207,3 +207,5 @@ Spec: [`specs/009-experiencia-publica-layout.md`](specs/009-experiencia-publica-
 Defeitos achados usando a aplicação publicada, fora do escopo de qualquer epic. Cada um entra com o teste que o reproduz.
 
 - [x] **10.1** Compartilhar ingresso levava ao endpoint JSON da API em vez da página pública `/ticket/[code]`
+- [x] **10.2** Leitor de QR baixava o `.wasm` da CDN da jsDelivr em runtime — portaria sem internet pública ficava sem leitura, e a falha era silenciosa
+- [x] **10.3** Documentar o fluxo da portaria no README e explicar que o QR carrega token assinado, não URL

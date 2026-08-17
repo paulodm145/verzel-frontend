@@ -66,6 +66,20 @@ A regra é ausência de dependência externa, não ausência de fonte própria. 
 
 Os arquivos da Inter passam a ser versionados no repositório e carregados por `next/font/local`. Não há chamada ao Google Fonts em build nem em runtime, o clone continua reprodutível offline, e o resultado deixa de depender do que está instalado na máquina do avaliador. `next/font/google` foi descartado justamente por baixar a fonte durante o build.
 
+## Leitor de QR sem CDN em runtime
+
+O fallback `zxing-wasm` baixa o binário `.wasm` durante o uso e, por padrão, da CDN da jsDelivr. Foi verificado em navegador: `https://fastly.jsdelivr.net/npm/zxing-wasm@3.1.2/dist/reader/zxing_reader.wasm`. É o pior lugar possível para uma dependência externa. Quem cai no fallback é exatamente quem não tem `BarcodeDetector` — **Safari no iPhone** e Firefox —, ou seja, o celular mais provável na porta de um evento; e a descoberta de que falta internet pública aconteceria com a fila esperando.
+
+O binário passou a ser servido pelo próprio domínio, copiado do `node_modules` por `scripts/copy-zxing-wasm.mjs` no `predev`/`prebuild`. Copiar em vez de versionar mantém o arquivo casado com a versão instalada; versionado, ele descasaria calado no primeiro `npm update`. É a mesma razão que levou a Inter a ser vendorizada em vez de vir do Google Fonts — a diferença é que aqui a falha não é cosmética, é a portaria parar.
+
+Junto veio o defeito irmão: o loop de decodificação não tratava exceção, então uma falha ao carregar o decodificador rejeitava a promessa e o loop deixava de se reagendar. A câmera continuava exibindo imagem e nunca mais lia nada, sem uma palavra ao operador. Agora a falha interrompe o loop uma única vez e vira mensagem pedindo o código manual, que já está sempre em tela.
+
+## O que o QR carrega
+
+O QR do ingresso contém o `qrContent` assinado pela API, não uma URL. É isso que sustenta o requisito de "código que não possa ser forjado": quem copia a imagem não consegue fabricar outra válida. A consequência é que apontar o app de câmera do sistema operacional para o QR mostra uma cadeia opaca e não abre nada — o consumidor daquele payload é a tela da portaria, que é onde o enunciado pede a leitura por câmera.
+
+Foi considerado embutir uma URL no QR para que qualquer câmera abrisse algo legível. Descartado: para preservar a assinatura, a URL teria de carregar o token inteiro, o que engorda o payload, adensa o QR e piora justamente a leitura à distância na porta — penalizando o usuário principal do código em favor de um caso secundário. Quem precisa *ver* o ingresso tem o link de compartilhamento para `/ticket/[code]`.
+
 ## Link de compartilhamento montado no frontend
 
 `GET /tickets/mine` devolve `shareUrl`, e o exemplo do `05-ingressos-e-portaria.md` passa esse campo direto para `navigator.share`. Seguir o exemplo à risca compartilha `https://<api>/tickets/TKT-...`, que responde **JSON**: quem recebe o link vê um objeto, não um ingresso. Foi o que aconteceu em produção.
