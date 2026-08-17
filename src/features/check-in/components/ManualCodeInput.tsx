@@ -12,6 +12,8 @@ import { formatTicketCode, isCompleteTicketCode } from "../lib/ticket-code-forma
 
 interface ManualCodeInputProps {
   disabled?: boolean;
+  /** Vem de `/check-in?code=…`, quando a portaria chega pela URL do QR. */
+  initialCode?: string;
   onSubmit: (code: string) => void;
 }
 
@@ -20,8 +22,10 @@ interface ManualCodeInputProps {
  * QR riscado ou bateria fraca no celular do cliente não podem ser um beco
  * sem saída com fila esperando na porta (spec 000, 4.4).
  */
-export function ManualCodeInput({ disabled, onSubmit }: ManualCodeInputProps) {
-  const [value, setValue] = useState("");
+export function ManualCodeInput({ disabled, initialCode, onSubmit }: ManualCodeInputProps) {
+  // Preenchido, não enviado: validar sozinho consumiria o ingresso antes de
+  // o operador confirmar qual é o evento daquela porta.
+  const [value, setValue] = useState(() => formatTicketCode(initialCode ?? ""));
   const complete = isCompleteTicketCode(value);
 
   function handleSubmit(event: FormEvent) {
