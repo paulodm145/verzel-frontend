@@ -51,7 +51,13 @@ Entre com `portaria@verzel.test`. O login já cai em `/check-in` — é a tela e
 2. Aponte a câmera para o QR do ingresso, ou digite o código em `TKT-XXXX-XXXX-XXXX`. A digitação está sempre visível, porque câmera é negada, falha e demora.
 3. O resultado ocupa a tela inteira por 2 segundos, com cor **e** ícone próprios: liberado, já utilizado, de outro evento ou inválido. Os 2 segundos também são a trava que evita ler o mesmo QR duas vezes e mostrar "já utilizado" logo depois de "liberado".
 
-**A câmera nativa do celular não serve para validar, e isso é de propósito.** O QR não carrega uma URL: carrega o `qrContent` assinado pela API, que é o que impede um ingresso de ser forjado. Apontar o app de câmera do sistema para ele mostra uma cadeia de caracteres sem sentido aparente — quem sabe o que fazer com ela é a tela da portaria. Para uma pessoa _ver_ o ingresso existe outro caminho: o link de compartilhamento, que aponta para `/ticket/[code]`.
+### Pelo celular, apontando a câmera nativa
+
+O QR carrega a **URL pública do ingresso**. Apontar a câmera do iPhone ou do Android abre `/ticket/TKT-…`, que mostra o ingresso: evento, data, local, assento, código e situação.
+
+Se quem abriu for a portaria, a página oferece **"Validar na portaria"**, que leva a `/check-in` já com o código preenchido — falta escolher o evento da porta e confirmar. Sem sessão, o mesmo botão passa pelo login carregando o destino.
+
+Ou seja: dá para validar sem usar o leitor da própria tela, só com a câmera do sistema. O leitor embutido continua sendo o caminho rápido para uma fila, porque não exige abrir página por ingresso.
 
 ## Arquitetura
 

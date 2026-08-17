@@ -221,7 +221,9 @@ Não se testa markup trivial ("EventCard renderiza o título"): é ruído que qu
 
 **Mapa de assentos, um assento por reserva.** `POST /events/:id/reservations` aceita apenas `{ seatId }` — não existe reserva por quantidade ("pista") nesta API, e prometer isso no README seria furo de entrega.
 
-## Compartilhar ingresso
+## Ingresso: QR e compartilhamento
+
+**O QR carrega a URL pública do ingresso (`/ticket/[code]`), não o `qrContent`.** Decisão revertida em uso e registrada em `DECISIONS.md` → "O que o QR carrega": a câmera nativa do celular só abre URL, e um QR que ela não sabe usar faz o sistema parecer quebrado. A portaria extrai o código da URL lida (`check-in/lib/scanned-value.ts`) e valida por `code` — o endpoint aceita `qrContent` **ou** `code`. O token cru continua aceito na leitura, por causa dos ingressos emitidos antes da mudança.
 
 **Não use o `shareUrl` da resposta**, e não siga o exemplo do `05-ingressos-e-portaria.md` que o passa para `navigator.share`. Ele aponta para o host da API, que responde JSON — a API não conhece o endereço deste frontend. O link é montado por `features/tickets/lib/share-url.ts` sobre a página pública `/ticket/[code]`. Mesma categoria da recomendação de `localStorage` em `02-autenticacao.md`: limitação da API, não do frontend.
 

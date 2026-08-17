@@ -208,4 +208,7 @@ Defeitos achados usando a aplicação publicada, fora do escopo de qualquer epic
 
 - [x] **10.1** Compartilhar ingresso levava ao endpoint JSON da API em vez da página pública `/ticket/[code]`
 - [x] **10.2** Leitor de QR baixava o `.wasm` da CDN da jsDelivr em runtime — portaria sem internet pública ficava sem leitura, e a falha era silenciosa
-- [x] **10.3** Documentar o fluxo da portaria no README e explicar que o QR carrega token assinado, não URL
+- [x] **10.3** Documentar o fluxo da portaria no README
+- [x] **10.4** QR passa a carregar a URL pública do ingresso, para a câmera nativa do celular abrir algo útil; portaria extrai o código da URL
+- [x] **10.5** Da URL à validação em dois toques: "Validar na portaria" na página pública e `/check-in?code=` com o campo preenchido
+- [x] **10.6** `403` oferece "entrar com outra conta" levando o destino pretendido, em vez de só aconselhar
